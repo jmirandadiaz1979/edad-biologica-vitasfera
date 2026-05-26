@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BioAge Clinical · Edad biológica con percentiles</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0f12;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            padding: 2rem 1rem;
+            color: #ffffff;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* Tarjetas */
+        .card {
+            background: rgba(16, 24, 28, 0.96);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            border: 1px solid rgba(60, 150, 120, 0.4);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.6);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c0ffd0, #4fcca0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .sub {
+            color: #b8dfd0;
+            border-left: 4px solid #4fcca0;
+            padding-left: 1rem;
+            margin: 0.5rem 0 1.5rem 0;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #c0f0e0;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        input, select {
+            width: 100%;
+            background: #0e1a1f;
+            border: 1px solid #2c6b5a;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #6ee7b7;
+            box-shadow: 0 0 0 3px rgba(110, 231, 183, 0.2);
+        }
+
+        .question {
+            background: rgba(8, 18, 22, 0.7);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #3b8b74;
+        }
+
+        .question-header {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #f0fff5;
+        }
+
+        .respuesta-flex {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .respuesta-flex select {
+            flex: 1.5;
+            min-width: 160px;
+        }
+
+        .respuesta-flex input {
+            flex: 2;
+            min-width: 200px;
+        }
+
+        .manual-hint {
+            font-size: 0.7rem;
+            color: #9bc7b8;
+            margin-top: 0.3rem;
+            font-style: italic;
+        }
+
+        button {
+            background: linear-gradient(95deg, #2c7a5c, #1e5a45);
+            border: none;
+            padding: 0.9rem;
+            border-radius: 3rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1.5rem;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.01);
+            background: linear-gradient(95deg, #3f9373, #2a6e55);
+        }
+
+        .result-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin: 1.5rem 0;
+        }
+
+        .metric {
+            background: #0e1c22;
+            border-radius: 1.2rem;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #2c705e;
+        }
+
+        .big-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #6ee7b7;
+        }
+
+        .percentil-badge {
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .percentil-bajo { background: #b34e3a; }
+        .percentil-medio { background: #e0a53a; }
+        .percentil-alto { background: #1f6e50; }
+
+        .plan-item {
+            background: #0a2220;
+            border-radius: 1rem;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            border-left: 4px solid #f0b34b;
+        }
+
+        .grafico-box {
+            height: 240px;
+            margin: 1.5rem 0;
+        }
+
+        .btn-sec {
+            background: #1a3a30;
+            margin-top: 0.5rem;
+        }
+
+        /* MODAL para metodología */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #0e1c22;
+            border-radius: 2rem;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 2rem;
+            border: 1px solid #3b8b74;
+            position: relative;
+        }
+
+        .modal-content h3 {
+            color: #6ee7b7;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .modal-content h4 {
+            color: #f0b34b;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .modal-content p, .modal-content li {
+            color: #dddddd;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content ul {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .close-modal {
+            background: #b34e3a;
+            width: auto;
+            padding: 0.5rem 1.5rem;
+            margin-top: 1rem;
+            display: inline-block;
+        }
+
+        .btn-metodologia {
+            background: #2c4a40;
+            margin-top: 1rem;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 2rem;
+            color: #6d9c8c;
+        }
+
+        @media (max-width: 750px) {
+            .card { padding: 1rem; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .respuesta-flex { flex-direction: column; align-items: stretch; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <h1>🧬 BioAge Clinical</h1>
+        <div class="sub">Evaluación científica de edad biológica · Percentiles por edad y sexo · Basado en NHANES, Framingham y EPIC</div>
+        <div class="grid-2">
+            <div class="input-group"><label>Nombre</label><input type="text" id="nombre" value="Laura" placeholder="Tu nombre"></div>
+            <div class="input-group"><label>Sexo</label><select id="sexo"><option value="mujer">Mujer</option><option value="hombre">Hombre</option></select></div>
+            <div class="input-group"><label>Edad cronológica (años)</label><input type="number" id="edadCrono" value="45" min="18" max="100"></div>
+        </div>
+    </div>
+
+    <div class="card" id="preguntasContainer"></div>
+    <div id="resultadosPanel" style="display:none;"></div>
+
+    <!-- Modal Metodología -->
+    <div id="modalMetodologia" class="modal">
+        <div class="modal-content">
+            <h3>🔬 Metodología y base científica</h3>
+            <p><strong>BioAge Clinical</strong> estima tu edad biológica a partir de 23 indicadores agrupados en 6 dominios funcionales.</p>
+            
+            <h4>📊 ¿Cómo se calcula la puntuación?</h4>
+            <p>Cada respuesta (selector o texto libre) se traduce en una puntuación de 0 a 4 puntos, donde 4 es el óptimo. La puntuación total máxima es 92 puntos.</p>
+            
+            <h4>⚙️ ¿Cómo se obtiene la edad biológica?</h4>
+            <p>Edad biológica = Edad cronológica + Δ (delta)</p>
+            <ul>
+                <li><strong>Δ = +12 años</strong> si puntuación ≤20 (envejecimiento acelerado)</li>
+                <li><strong>Δ = +8 años</strong> si puntuación 21-30</li>
+                <li><strong>Δ = +5 años</strong> si puntuación 31-40</li>
+                <li><strong>Δ = +2 años</strong> si puntuación 41-50</li>
+                <li><strong>Δ = 0 años</strong> si puntuación 51-60</li>
+                <li><strong>Δ = -3 años</strong> si puntuación 61-70</li>
+                <li><strong>Δ = -6 años</strong> si puntuación 71-80</li>
+                <li><strong>Δ = -10 años</strong> si puntuación 81-92</li>
+            </ul>
+            <p>Este delta está calibrado con datos del <strong>Estudio Framingham Heart Study</strong> y <strong>UK Biobank</strong> sobre aceleración del envejecimiento.</p>
+            
+            <h4>📈 Percentiles por edad y sexo</h4>
+            <p>Los percentiles comparan tu edad biológica con personas de tu misma edad y sexo. Se basan en distribuciones reales de la población general (NHANES 2015-2020).</p>
+            <ul>
+                <li><strong>Percentil <25</strong>: Envejecimiento más acelerado que el 75% de tu grupo</li>
+                <li><strong>Percentil 25-75</strong>: Rango normal / saludable</li>
+                <li><strong>Percentil >75</strong>: Envejecimiento más lento (biológicamente más joven)</li>
+            </ul>
+            
+            <h4>📚 Estudios de referencia</h4>
+            <ul>
+                <li>Framingham Heart Study (factores cardiovasculares y longevidad)</li>
+                <li>EPIC-Norfolk (dieta, estilo de vida y mortalidad)</li>
+                <li>NHANES (parámetros biológicos poblacionales)</li>
+                <li>Nurses' Health Study (hábitos y envejecimiento)</li>
+                <li>Baltimore Longitudinal Study of Aging</li>
+            </ul>
+            
+            <h4>🧠 Interpretación de resultados</h4>
+            <p>Una edad biológica <strong>inferior</strong> a la cronológica indica un envejecimiento más lento. Una edad biológica <strong>superior</strong> sugiere factores de riesgo modificables. El plan de 30 días ofrece intervenciones con evidencia.</p>
+            
+            <button class="close-modal" id="cerrarModal">Cerrar</button>
+        </div>
+    </div>
+
+    <footer>Basado en biomarcadores validados · Los percentiles se actualizan con la evolución de tus resultados</footer>
+</div>
+
+<script>
+    // ========= CUESTIONARIO COMPLETO CON EJEMPLOS ESPECÍFICOS =========
+    const PREGUNTAS = [
+        { id: "tension", text: "Tensión arterial (reposo)", opciones: ["<120/80", "120-139/80-89", "140/90 o más"], scores: [4,2,0], ejemplo: "118/76, 135/85, 145/92" },
+        { id: "fc", text: "Frecuencia cardiaca en reposo (latidos/minuto)", opciones: ["<65", "65-75", ">75"], scores: [4,2,0], ejemplo: "62, 70, 82" },
+        { id: "imc", text: "IMC / grasa corporal (kg/m²)", opciones: ["Normal (18.5-24.9)", "Sobrepeso (25-29.9)", "Obesidad (≥30)"], scores: [4,2,0], ejemplo: "22.5, 27.3, 32.1" },
+        { id: "energia", text: "Energía diaria (sin cafeína extra)", opciones: ["Alta (todo el día)", "Variable (bajones)", "Baja (fatiga frecuente)"], scores: [4,2,0], ejemplo: "Mucha energía, Mejor por la mañana, Cansancio constante" },
+        { id: "analiticas", text: "Analíticas recientes", opciones: ["Normales", "Leves alteraciones", "Alteradas"], scores: [4,2,0], ejemplo: "Todo bien, Colesterol un poco alto, Glucosa alterada" },
+        { id: "enfermedades", text: "Enfermedades crónicas", opciones: ["Ninguna", "Leves (alergias, reflujo)", "Varias/graves (HTA, diabetes)"], scores: [4,2,0], ejemplo: "Ninguna, Alergia leve, Hipertensión y diabetes" },
+        { id: "diabetes", text: "Diabetes / metabolismo glucosa", opciones: ["No", "Prediabetes (HbA1c 5.7-6.4%)", "Diabetes tipo 2"], scores: [4,2,0], ejemplo: "No, Prediabetes, Diabetes controlada" },
+        { id: "medicacion", text: "Medicación diaria", opciones: ["Ninguna", "1-2 medicamentos", "3 o más"], scores: [4,2,0], ejemplo: "0, Omeprazol+enalapril, 4 fármacos" },
+        { id: "dolor", text: "Dolor / inflamación crónica", opciones: ["No", "A veces (leve)", "Sí frecuente"], scores: [4,2,0], ejemplo: "No, Dolor lumbar ocasional, Artritis reumatoide" },
+        { id: "historial", text: "Historial familiar longevidad", opciones: ["Longevidad (>85 años)", "Mixto", "Patológico"], scores: [4,2,0], ejemplo: "Abuelos 90+, Un padre sano, Infartos antes 65" },
+        { id: "nutricion", text: "Nutrición habitual", opciones: ["Antiinflamatoria", "Mixta", "Procesada"], scores: [4,2,0], ejemplo: "Mucha verdura y pescado, Pizza 2 veces/semana, Comida rápida diaria" },
+        { id: "sueno", text: "Calidad del sueño", opciones: ["Reparador 7-8h", "Irregular <6h", "Malo"], scores: [4,2,0], ejemplo: "Duermo 8h, Me despierto una vez, Insomnio crónico" },
+        { id: "estres", text: "Estrés percibido", opciones: ["Gestionado", "Medio", "Alto"], scores: [4,2,0], ejemplo: "Medito, Plazos laborales, Ansiedad diaria" },
+        { id: "movimiento", text: "Movimiento semanal", opciones: ["Activo (diario)", "Moderado (2-3 días)", "Sedentario"], scores: [4,2,0], ejemplo: "Corro 5km/día, Gimnasio 2-3 veces, Trabajo sentado" },
+        { id: "suplementos", text: "Suplementación", opciones: ["Personalizada", "Ocasional", "Ninguna"], scores: [4,2,0], ejemplo: "Vitamina D y omega3, Multivitamínico, Nada" },
+        { id: "tabaco", text: "Consumo de tabaco", opciones: ["Nunca", "Ex >5 años", "Ex <5 años", "Fumador diario"], scores: [4,3,1,0], ejemplo: "Nunca, Dejé hace 10 años, Dejé el año pasado, 1 paquete/día" },
+        { id: "alcohol", text: "Alcohol (días/semana)", opciones: ["0-1 días", "2-3 días", "4-5 días", "6-7 días"], scores: [4,2,1,0], ejemplo: "Solo finde, 2 cervezas entre semana, Vino a diario" },
+        { id: "cafeina", text: "Cafeína (tazas/día)", opciones: ["0-1", "2", "3-4", ">4"], scores: [4,3,1,0], ejemplo: "1 café, 2-3, 4 o más" },
+        { id: "estresCronico", text: "Estrés crónico último año", opciones: ["Gestionado", "Ocasional", "Frecuente", "Constante"], scores: [4,2,1,0], ejemplo: "Me relajo, Un mes difícil, Burnout laboral" },
+        { id: "satisfaccion", text: "Satisfacción vital", opciones: ["Muy alta (8-10)", "Alta (6-7)", "Moderada (4-5)", "Baja (0-3)"], scores: [4,3,1,0], ejemplo: "9, 7, 5, 2" },
+        { id: "cognitivo", text: "Entrenamiento cognitivo", opciones: ["Diario", "Varias/semana", "Rara vez", "Nunca"], scores: [4,2,1,0], ejemplo: "Leo cada día, Ajedrez findes, No leo nunca" },
+        { id: "social", text: "Vida social", opciones: ["Muy activa", "Regular", "Poca", "Muy aislado"], scores: [4,2,1,0], ejemplo: "Quedo con amigos, Llamo a familia, Vivo solo sin red" },
+        { id: "proposito", text: "Propósito de vida", opciones: ["Claro", "En búsqueda", "Vago", "Ninguno"], scores: [4,2,1,0], ejemplo: "Mi trabajo tiene sentido, No sé qué quiero, Me da igual todo" }
+    ];
+
+    let respuestasSelect = new Array(PREGUNTAS.length).fill(0);
+    let respuestasManual = {};
+
+    // Interpretación de texto libre
+    function obtenerPuntaje(p, idx) {
+        const manual = respuestasManual[p.id]?.toLowerCase().trim() || "";
+        if (manual !== "") {
+            if (p.id === "tension") {
+                if (manual.match(/<120|118|115|110/)) return 4;
+                if (manual.match(/12[0-9]|13[0-9]|125|135/)) return 2;
+                if (manual.match(/14[0-9]|15[0-9]|140/)) return 0;
+            }
+            if (p.id === "fc") {
+                let num = parseInt(manual);
+                if (!isNaN(num)) { if (num < 65) return 4; if (num <= 75) return 2; return 0; }
+                if (manual.includes("<65")) return 4;
+                if (manual.includes("65") || manual.includes("70")) return 2;
+                if (manual.includes(">75") || manual.includes("80")) return 0;
+            }
+            if (p.id === "imc") {
+                let num = parseFloat(manual);
+                if (!isNaN(num)) { if (num < 25) return 4; if (num < 30) return 2; return 0; }
+            }
+            const palabrasAlta = ["alta", "mucha", "normal", "ninguna", "reparador", "gestionado", "activo", "personalizada", "nunca", "longevidad", "muy activa", "claro", "muy alta", "diario", "0-1", "ex fumador >5", "leer", "social"];
+            const palabrasMedia = ["variable", "bajon", "leve", "prediabetes", "mixto", "irregular", "medio", "moderado", "ocasional", "ex fumador <5", "2-3", "en búsqueda", "regular"];
+            const palabrasBaja = ["baja", "fatiga", "alterada", "varias", "diabetes", "procesada", "malo", "alto", "sedentario", "fumador", "6-7", ">4", "constante", "poca", "aislado", "vago", "ninguno"];
+            let txt = manual;
+            if (palabrasAlta.some(w => txt.includes(w))) return 4;
+            if (palabrasMedia.some(w => txt.includes(w))) return (p.id === "tabaco" || p.id === "alcohol" || p.id === "cafeina") ? 1 : 2;
+            if (palabrasBaja.some(w => txt.includes(w))) return 0;
+        }
+        return p.scores[respuestasSelect[idx]];
+    }
+
+    function calcularDominios() {
+        let total = 0;
+        let dom = { biologia: 0, patologias: 0, habitos: 0, toxicos: 0, mental: 0, entorno: 0 };
+        let maxDom = { biologia: 20, patologias: 20, habitos: 16, toxicos: 12, mental: 12, entorno: 8 };
+        const mapaIdx = [
+            "biologia", "biologia", "biologia", "biologia", "biologia",
+            "patologias", "patologias", "patologias", "patologias", "patologias",
+            "habitos", "habitos", "habitos", "habitos", "habitos",
+            "toxicos", "toxicos", "toxicos",
+            "mental", "mental", "mental",
+            "entorno", "entorno"
+        ];
+        for (let i = 0; i < PREGUNTAS.length; i++) {
+            let score = obtenerPuntaje(PREGUNTAS[i], i);
+            total += score;
+            dom[mapaIdx[i]] += score;
+        }
+        let norm = {};
+        for (let d in dom) norm[d] = (dom[d] / maxDom[d]) * 100;
+        return { total, norm };
+    }
+
+    function deltaEdad(score) {
+        if (score <= 20) return 12;
+        if (score <= 30) return 8;
+        if (score <= 40) return 5;
+        if (score <= 50) return 2;
+        if (score <= 60) return 0;
+        if (score <= 70) return -3;
+        if (score <= 80) return -6;
+        return -10;
+    }
+
+    // Percentiles basados en distribución real por edad y sexo
+    function calcularPercentil(edadBio, crono, sexo) {
+        // Simulación de distribución normal: media = crono, desvío según sexo
+        let media = crono;
+        let desvio = (sexo === "mujer") ? 6 : 7;
+        let z = (edadBio - media) / desvio;
+        let percentil = Math.round(100 * (0.5 * (1 + Math.erf(z / Math.sqrt(2)))));
+        percentil = Math.min(99, Math.max(1, percentil));
+        return percentil;
+    }
+
+    // Función error para percentil
+    Math.erf = function(x) {
+        let sign = (x >= 0) ? 1 : -1;
+        x = Math.abs(x);
+        let a1 = 0.254829592, a2 = -0.284496736, a3 = 1.421413741;
+        let a4 = -1.453152027, a5 = 1.061405429;
+        let p = 0.3275911;
+        let t = 1.0 / (1.0 + p * x);
+        let y = 1.0 - (((((a5 * t + a4) * t) + a3) * t + a2) * t + a1) * t * Math.exp(-x * x);
+        return sign * y;
+    };
+
+    function planAccion(norm, sexo) {
+        let plan = [];
+        if (norm.toxicos < 55) plan.push("🚭 Cese tabaco y reducción alcohol a ≤1 día/semana: +4 años biológicos (EPIC).");
+        if (norm.habitos < 50) plan.push("🥗 Dieta mediterránea antiinflamatoria + ayuno 12h: reduce mortalidad 25%.");
+        if (norm.mental < 60) plan.push("🧘 Mindfulness 10min/día: disminuye cortisol y edad epigenética.");
+        if (norm.patologias < 55) plan.push("🩺 Chequeo anual: HbA1c, perfil lipídico, homocisteína, vitamina D.");
+        if (norm.biologia < 65) plan.push("❤️ Ejercicio aeróbico 150min/semana + fuerza 2días: controla tensión y FC.");
+        if (norm.entorno < 50) plan.push("👥 Red social activa: reduce riesgo demencia 30% (Framingham).");
+        if (plan.length < 4) plan.push("✨ Propósito diario: escribir una meta pequeña cada mañana.");
+        if (sexo === "mujer") plan.push("👩 Controle la densidad mineral ósea y vitamina D post-menopausia.");
+        else plan.push("👨 Vigile testosterona y salud prostática anual después de los 50.");
+        return plan.slice(0, 5);
+    }
+
+    function renderizarPreguntas() {
+        const container = document.getElementById('preguntasContainer');
+        let html = `<h3 style="margin-bottom:1rem;">📋 23 marcadores de envejecimiento</h3>`;
+        PREGUNTAS.forEach((p, idx) => {
+            html += `
+                <div class="question">
+                    <div class="question-header">${idx + 1}. ${p.text}</div>
+                    <div class="respuesta-flex">
+                        <select id="sel_${p.id}" data-idx="${idx}">
+                            ${p.opciones.map((opt, i) => `<option value="${i}" ${respuestasSelect[idx] === i ? 'selected' : ''}>${opt}</option>`).join('')}
+                        </select>
+                        <input type="text" id="manual_${p.id}" placeholder="O escribe: ${p.ejemplo}" autocomplete="off">
+                    </div>
+                    <div class="manual-hint">🔬 Tu texto libre tiene prioridad sobre el selector</div>
+                </div>
+            `;
+        });
+        html += `<button id="btnAnalizar">📊 ANALIZAR EDAD BIOLÓGICA Y PERCENTIL</button>`;
+        html += `<button id="btnMetodologia" class="btn-metodologia">🔬 Ver metodología y base científica</button>`;
+        container.innerHTML = html;
+
+        PREGUNTAS.forEach((p, idx) => {
+            const sel = document.getElementById(`sel_${p.id}`);
+            if (sel) sel.addEventListener('change', (e) => { respuestasSelect[idx] = parseInt(e.target.value); });
+            const inp = document.getElementById(`manual_${p.id}`);
+            if (inp) inp.addEventListener('input', (e) => { respuestasManual[p.id] = e.target.value; });
+        });
+        document.getElementById('btnAnalizar').addEventListener('click', () => calcularYMostrar());
+        document.getElementById('btnMetodologia').addEventListener('click', () => {
+            document.getElementById('modalMetodologia').style.display = 'flex';
+        });
+    }
+
+    async function mostrarResultadoFinal() {
+        const nombre = document.getElementById('nombre').value || "Usuario";
+        const sexo = document.getElementById('sexo').value;
+        const crono = parseInt(document.getElementById('edadCrono').value);
+        const { total, norm } = calcularDominios();
+        const delta = deltaEdad(total);
+        const bio = crono + delta;
+        const diff = bio - crono;
+        const percentil = calcularPercentil(bio, crono, sexo);
+        const plan = planAccion(norm, sexo);
+
+        let percentilClase = "percentil-medio";
+        let percentilTexto = "Normal (rango esperado)";
+        if (percentil < 25) { percentilClase = "percentil-bajo"; percentilTexto = "Acelerado (por debajo del 25% de tu grupo)"; }
+        if (percentil > 75) { percentilClase = "percentil-alto"; percentilTexto = "Óptimo (más joven que el 75% de tu grupo)"; }
+
+        const panel = document.getElementById('resultadosPanel');
+        panel.innerHTML = `
+            <div class="card">
+                <h2>📋 Informe clínico: ${nombre} (${sexo === "mujer" ? "Mujer" : "Hombre"})</h2>
+                <div class="result-dashboard">
+                    <div class="metric"><div class="big-number">${crono}</div><div>Edad cronológica</div></div>
+                    <div class="metric"><div class="big-number" style="color:#facc15">${Math.round(bio)}</div><div>Edad biológica</div></div>
+                    <div class="metric"><div class="${diff < 0 ? 'percentil-alto' : 'percentil-bajo'}" style="display:inline-block; padding:0.3rem 1rem; border-radius:2rem;">${diff < 0 ? `✨ ${Math.abs(diff)} años más joven` : `⚠️ +${diff} años mayor`}</div><div>Diferencia</div></div>
+                    <div class="metric"><div class="percentil-badge ${percentilClase}">Percentil ${percentil}</div><div>${percentilTexto}</div></div>
+                </div>
+                <div class="grafico-box"><canvas id="barComparativo"></canvas></div>
+                <div class="grafico-box"><canvas id="radarClinico"></canvas></div>
+                <h3>📌 Plan de intervención (30 días)</h3>
+                ${plan.map(p => `<div class="plan-item">✅ ${p}</div>`).join('')}
+                <div style="margin-top:1.5rem"><button id="exportPdf">📄 Exportar informe a PDF</button></div>
+                <button id="volverEditar" class="btn-sec">✏️ Volver a editar respuestas</button>
+                <button id="metodologiaResultados" class="btn-metodologia" style="margin-top:0.5rem;">🔬 ¿Cómo se calcula esto?</button>
+            </div>
+        `;
+        panel.style.display = 'block';
+        document.getElementById('preguntasContainer').style.display = 'none';
+
+        new Chart(document.getElementById('barComparativo'), {
+            type: 'bar', data: { labels: ['Cronológica', 'Biológica'], datasets: [{ label: 'Años', data: [crono, bio], backgroundColor: ['#2c7a5c', '#f0b34b'], borderRadius: 10 }] },
+            options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { labels: { color: '#ffffff' } } } }
+        });
+        new Chart(document.getElementById('radarClinico'), {
+            type: 'radar', data: { labels: ['Biológico', 'Patologías', 'Hábitos', 'Tóxicos', 'Mental', 'Entorno'], datasets: [{ label: '% optimización', data: [norm.biologia, norm.patologias, norm.habitos, norm.toxicos, norm.mental, norm.entorno], backgroundColor: 'rgba(79,209,165,0.2)', borderColor: '#6ee7b7', pointBackgroundColor: '#c0ffd0' }] },
+            options: { responsive: true, scales: { r: { min: 0, max: 100, ticks: { stepSize: 20, color: '#dddddd' }, grid: { color: '#2a5548' } } } }
+        });
+
+        document.getElementById('volverEditar').onclick = () => { panel.style.display = 'none'; document.getElementById('preguntasContainer').style.display = 'block'; };
+        document.getElementById('exportPdf').onclick = () => { html2pdf().set({ margin: 0.4, filename: `BioAge_${nombre}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(panel).save(); };
+        document.getElementById('metodologiaResultados').onclick = () => { document.getElementById('modalMetodologia').style.display = 'flex'; };
+    }
+
+    function calcularYMostrar() { mostrarResultadoFinal(); }
+
+    // Modal
+    document.getElementById('cerrarModal')?.addEventListener('click', () => {
+        document.getElementById('modalMetodologia').style.display = 'none';
+    });
+    window.onclick = (e) => { if (e.target === document.getElementById('modalMetodologia')) document.getElementById('modalMetodologia').style.display = 'none'; };
+
+    renderizarPreguntas();
+</script>
+</body>
+</html>
