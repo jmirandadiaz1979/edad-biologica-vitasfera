@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>OMARA · Longevidad Natural · Programa completo</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a120e;
+  --bg2: #0f1a14;
+  --surface: rgba(30, 50, 40, 0.5);
+  --surface2: rgba(20, 40, 30, 0.7);
+  --border: rgba(80, 140, 100, 0.25);
+  --border2: rgba(80, 140, 100, 0.4);
+  --accent: #C9A87C;
+  --accent2: #8BAA7B;
+  --accent-dim: rgba(201, 168, 124, 0.15);
+  --teal: #5CB8A4;
+  --amber: #E8B86B;
+  --red: #D97A6C;
+  --blue: #7BA6B8;
+  --purple: #B8A0C8;
+  --coral: #E8A090;
+  --text: #F5F0E0;
+  --text2: #C8D0C0;
+  --text3: #98A890;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --radius: 12px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.55;
+  min-height: 100vh;
+  background-image: radial-gradient(ellipse 80% 50% at 20% -10%, rgba(139,170,123,0.08) 0%, transparent 60%);
+}
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+header {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.logo-omara {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 400;
+  background: linear-gradient(135deg, #E8D8B0, #C9A87C);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  letter-spacing: -0.02em;
+}
+.logo-sub {
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.2rem;
+}
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400;
+  margin: 0.5rem 0;
+}
+.subtitle {
+  color: var(--text2);
+  font-size: 0.9rem;
+  max-width: 550px;
+  margin: 0 auto;
+}
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+  position: relative;
+  z-index: 1;
+}
+.section-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 1.5rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border2);
+}
+.card {
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s;
+}
+.card:hover {
+  border-color: var(--border2);
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field label { font-size: 11px; font-weight: 500; color: var(--text2); letter-spacing: 0.05em; }
+input, select {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+input:focus, select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+.btn-generate {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2rem;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  border: none;
+  border-radius: var(--radius-xl);
+  color: #0a120e;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-generate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(201, 168, 124, 0.3);
+}
+.tabs-bar {
+  display: flex;
+  gap: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 5px;
+  margin: 1.5rem 0;
+}
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text2);
+  font-weight: 500;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  color: #0a120e;
+}
+.tab-panel { display: none; animation: fadeIn 0.3s ease; }
+.tab-panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.result-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.metric-card {
+  background: var(--surface2);
+  border-radius: 1.2rem;
+  padding: 1.2rem;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.big-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 1rem;
+}
+.food-card {
+  background: var(--bg2);
+  border-radius: 12px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.food-card:hover { border-color: var(--accent); }
+.food-name { font-weight: 600; font-size: 13px; }
+.food-mech { font-size: 10px; color: var(--accent); margin-top: 4px; }
+.food-desc { font-size: 10px; color: var(--text3); margin-top: 4px; }
+.meal-plan-day {
+  background: var(--surface2);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 0.5rem;
+}
+.prediction-card {
+  background: linear-gradient(135deg, rgba(139,170,123,0.15), rgba(201,168,124,0.08));
+  border: 1px solid var(--accent);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+.disclaimer {
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 11px;
+  color: var(--text3);
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 750px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  header { padding: 1.5rem; }
+  .card { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<header>
+  <div class="logo-omara">🌿 OMARA</div>
+  <div class="logo-sub">LONGEVIDAD NATURAL</div>
+  <h1>Tu programa de <em style="color:var(--accent)">longevidad</em> personalizado</h1>
+  <p class="subtitle">23 indicadores · 7 hábitos · Alimentación personalizada · Predicciones científicas</p>
+</header>
+<div class="container">
+  <!-- Datos básicos -->
+  <div class="card">
+    <div class="grid-2">
+      <div class="field"><label>🌿 Tu nombre</label><input type="text" id="nombre" value="Laura" placeholder="Nombre"></div>
+      <div class="field"><label>⚥ Sexo biológico</label><select id="sexo"><option value="mujer">Mujer</option><option value="hombre">Hombre</option></select></div>
+      <div class="field"><label>📅 Edad (años)</label><input type="number" id="edad" min="18" max="100" value="45"></div>
+      <div class="field"><label>⚖️ Peso (kg)</label><input type="number" id="peso" min="40" max="200" value="65"></div>
+    </div>
+  </div>
+
+  <!-- Aquí se generarán dinámicamente las preguntas del cuestionario -->
+  <div id="cuestionarioContainer"></div>
+
+  <button class="btn-generate" id="btnGenerar">🌿 GENERAR MI PROGRAMA DE LONGEVIDAD</button>
+
+  <!-- Resultados -->
+  <div id="resultadosPanel" style="display:none;"></div>
+
+  <div class="disclaimer">
+    🌱 Este programa es educativo y orientativo. Consulta siempre con un profesional de la salud antes de realizar cambios significativos.
+  </div>
+</div>
+
+<script>
+// ========= BASE DE DATOS DE ALIMENTOS POR MECANISMO =========
+const ALIMENTOS_DB = {
+  autofagia: [
+    { nombre: "Germen de trigo", mecanismo: "Espermidina", desc: "Activa autofagia directamente" },
+    { nombre: "Setas shiitake", mecanismo: "Beta-glucanos", desc: "Estimulan macroautofagia" },
+    { nombre: "Café (sin azúcar)", mecanismo: "Polifenoles", desc: "Activa AMPK y autofagia" },
+    { nombre: "Cúrcuma", mecanismo: "Curcumina", desc: "Induce autofagia vía Beclin-1" },
+    { nombre: "Té matcha", mecanismo: "EGCG", desc: "Actúa como senostático + autofagia" }
+  ],
+  sirtuinas: [
+    { nombre: "Uvas moradas", mecanismo: "Resveratrol", desc: "Activa SIRT1" },
+    { nombre: "Arándanos", mecanismo: "Pterostilbeno", desc: "Potente activador SIRT1" },
+    { nombre: "Aceite de oliva", mecanismo: "Oleuropeína", desc: "Activa SIRT6" },
+    { nombre: "Cacao 85%+", mecanismo: "Epicatequina", desc: "SIRT1 + mitocondrias" },
+    { nombre: "Alcaparras", mecanismo: "Quercetina", desc: "Senolítico + SIRT1" }
+  ],
+  nad: [
+    { nombre: "Brócoli", mecanismo: "Sulforafano", desc: "Aumenta NAD+ vía NRF2" },
+    { nombre: "Aguacate", mecanismo: "Niacina", desc: "Precursor NAD+" },
+    { nombre: "Champiñones", mecanismo: "Niacina", desc: "Ricos en vitamina B3" },
+    { nombre: "Pavo/pollo", mecanismo: "Triptófano", desc: "Precursor NAD+ vía quinurenina" },
+    { nombre: "Levadura nutricional", mecanismo: "Niacina", desc: "Fuente concentrada" }
+  ],
+  senolitico: [
+    { nombre: "Alcaparras", mecanismo: "Quercetina", desc: "Senolítico natural más potente" },
+    { nombre: "Fresas", mecanismo: "Fisetina", desc: "Elimina células senescentes" },
+    { nombre: "Uvas", mecanismo: "Piceatannol", desc: "Senolítico selectivo" },
+    { nombre: "Cebolla morada", mecanismo: "Quercetina", desc: "Alta concentración" },
+    { nombre: "Piper longum", mecanismo: "Piperlongumina", desc: "Senolítico avanzado" }
+  ],
+  antiinflamatorio: [
+    { nombre: "Jengibre", mecanismo: "Gingeroles", desc: "Inhibe NF-kB" },
+    { nombre: "Cúrcuma + pimienta", mecanismo: "Curcumina", desc: "Antiinflamatorio sistémico" },
+    { nombre: "Salmón salvaje", mecanismo: "Omega-3 EPA/DHA", desc: "Reduce IL-6 y TNF-alfa" },
+    { nombre: "Aceite de oliva", mecanismo: "Oleocantal", desc: "Actúa como ibuprofeno natural" },
+    { nombre: "Té de romero", mecanismo: "Ácido carnósico", desc: "Reduce neuroinflamación" }
+  ],
+  mtor_inhibidor: [
+    { nombre: "Ayuno", mecanismo: "Restricción calórica", desc: "Inhibe mTOR directamente" },
+    { nombre: "Berberina (suplemento)", mecanismo: "Berberina", desc: "Inhibe potente" },
+    { nombre: "Aceite de coco", mecanismo: "Triglicéridos MCT", desc: "Modula mTOR" }
+  ]
+};
+
+// ========= PREGUNTAS DEL CUESTIONARIO OMARA =========
+const PREGUNTAS = [
+  { id: "tension", text: "Tensión arterial (reposo)", opciones: ["<120/80", "120-139/80-89", "140/90+"], scores: [4,2,0], ejemplo: "118/76, 135/85" },
+  { id: "fc", text: "Frecuencia cardiaca en reposo (lpm)", opciones: ["<65", "65-75", ">75"], scores: [4,2,0], ejemplo: "62, 70, 82" },
+  { id: "imc", text: "IMC (kg/m²)", opciones: ["Normal (<25)", "Sobrepeso (25-29.9)", "Obesidad (≥30)"], scores: [4,2,0], ejemplo: "22, 27, 33" },
+  { id: "vegetales", text: "Porciones de vegetales al día", opciones: ["0-1", "2", "3", "4", "5+"], scores: [0,1,2,3,4], ejemplo: "2-3" },
+  { id: "azucar", text: "Consumo de azúcares/ultraprocesados", opciones: ["Diario", "3-4/sem", "1-2/sem", "Ocasional", "Nunca"], scores: [0,1,2,3,4], ejemplo: "Solo findes" },
+  { id: "agua", text: "Litros de agua al día", opciones: ["<1", "1-1.5", "1.5-2", "2-3", ">3"], scores: [0,1,2,3,4], ejemplo: "1.8L" },
+  { id: "sueno", text: "Calidad del sueño", opciones: ["Malo (<6h o interrumpido)", "Irregular", "Bueno (7-8h constante)", "Excelente (profundo + constante)"], scores: [0,1,3,4], ejemplo: "7h seguidas" },
+  { id: "estres", text: "Estrés percibido", opciones: ["Alto constante", "Moderado", "Bajo", "Muy bajo/gestionado"], scores: [0,1,3,4], ejemplo: "Medito" },
+  { id: "ejercicio", text: "Ejercicio semanal", opciones: ["0-1", "2-3", "4-5", "6-7"], scores: [0,2,3,4], ejemplo: "3 días" },
+  { id: "tabaco", text: "Tabaco", opciones: ["Fumador diario", "Ocasional", "Ex >5 años", "Nunca"], scores: [0,1,3,4], ejemplo: "Nunca" },
+  { id: "alcohol", text: "Alcohol (días/semana)", opciones: ["6-7", "4-5", "2-3", "0-1"], scores: [0,1,2,4], ejemplo: "Solo finde" },
+  { id: "social", text: "Vida social", opciones: ["Muy aislado", "Poca", "Regular", "Activa"], scores: [0,1,2,4], ejemplo: "Quedo con amigos" },
+  { id: "proposito", text: "Propósito de vida", opciones: ["Ninguno", "Vago", "En búsqueda", "Claro"], scores: [0,1,2,4], ejemplo: "Mi trabajo tiene sentido" }
+];
+
+let respuestasSelect = new Array(PREGUNTAS.length).fill(0);
+let respuestasManual = {};
+
+function renderizarCuestionario() {
+  const container = document.getElementById('cuestionarioContainer');
+  let html = `<div class="section-label">📋 Indicadores de longevidad</div><div class="card">`;
+  PREGUNTAS.forEach((p, idx) => {
+    html += `<div style="margin-bottom:1rem; border-left: 2px solid var(--accent); padding-left: 0.8rem;">
+      <div style="font-size:13px; font-weight:600; margin-bottom:6px;">${idx+1}. ${p.text}</div>
+      <div class="grid-2">
+        <select id="sel_${p.id}" data-idx="${idx}" style="width:100%;">
+          ${p.opciones.map((opt, i) => `<option value="${i}" ${respuestasSelect[idx]===i ? 'selected' : ''}>${opt}</option>`).join('')}
+        </select>
+        <input type="text" id="manual_${p.id}" placeholder="O escribe: ${p.ejemplo}" style="width:100%;">
+      </div>
+      <div style="font-size:10px; color:var(--text3); margin-top:4px;">🌱 Tu texto libre tiene prioridad</div>
+    </div>`;
+  });
+  html += `</div>`;
+  container.innerHTML = html;
+
+  PREGUNTAS.forEach((p, idx) => {
+    const sel = document.getElementById(`sel_${p.id}`);
+    if (sel) sel.addEventListener('change', (e) => { respuestasSelect[idx] = parseInt(e.target.value); });
+    const inp = document.getElementById(`manual_${p.id}`);
+    if (inp) inp.addEventListener('input', (e) => { respuestasManual[p.id] = e.target.value.toLowerCase(); });
+  });
+}
+
+function obtenerPuntaje(p, idx) {
+  const manual = respuestasManual[p.id] || "";
+  if (manual) {
+    if (manual.includes("normal") || manual.includes("bueno") || manual.includes("activa") || manual.includes("nunca") || manual.includes("claro")) return 4;
+    if (manual.includes("moderado") || manual.includes("irregular") || manual.includes("ocasional")) return 2;
+    if (manual.includes("alto") || manual.includes("malo") || manual.includes("aislado") || manual.includes("fumador")) return 0;
+    if (manual.match(/\d+/)) {
+      let num = parseFloat(manual);
+      if (p.id === "vegetales") { if (num >= 5) return 4; if (num >= 3) return 2; return 0; }
+      if (p.id === "agua") { if (num >= 2.5) return 4; if (num >= 1.5) return 2; return 0; }
+    }
+  }
+  return p.scores[respuestasSelect[idx]];
+}
+
+function calcularPuntuacionTotal() {
+  let total = 0;
+  for (let i = 0; i < PREGUNTAS.length; i++) {
+    total += obtenerPuntaje(PREGUNTAS[i], i);
+  }
+  return Math.min(100, Math.round((total / (PREGUNTAS.length * 4)) * 100));
+}
+
+function calcularEdadBiologica(edad, score) {
+  let delta = 0;
+  if (score <= 30) delta = 10;
+  else if (score <= 45) delta = 5;
+  else if (score <= 55) delta = 2;
+  else if (score <= 65) delta = 0;
+  else if (score <= 80) delta = -3;
+  else if (score <= 90) delta = -6;
+  else delta = -10;
+  return Math.max(18, edad + delta);
+}
+
+function recomendarAlimentos(score) {
+  let mecanismosPrioritarios = [];
+  if (score < 40) mecanismosPrioritarios = ["autofagia", "antiinflamatorio", "senolitico"];
+  else if (score < 60) mecanismosPrioritarios = ["sirtuinas", "nad", "antiinflamatorio"];
+  else mecanismosPrioritarios = ["autofagia", "sirtuinas", "nad"];
+  
+  let alimentos = [];
+  mecanismosPrioritarios.forEach(m => {
+    if (ALIMENTOS_DB[m]) alimentos.push(...ALIMENTOS_DB[m].slice(0, 3));
+  });
+  return [...new Map(alimentos.map(a => [a.nombre, a])).values()].slice(0, 9);
+}
+
+function generarPlanComidas(alimentos) {
+  const dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+  return dias.map((dia, i) => {
+    let a = alimentos[i % alimentos.length];
+    return `<div class="meal-plan-day"><strong>${dia}</strong><br>🍽️ Incluir: <span style="color:var(--accent)">${a.nombre}</span> (${a.mecanismo})<br>🥗 Completar con vegetales de hoja verde + proteína magra + grasas saludables</div>`;
+  }).join('');
+}
+
+function predecirMejora(score, habitosBajos) {
+  let mejoraPotencial = 0;
+  if (habitosBajos.includes("vegetales")) mejoraPotencial += 2;
+  if (habitosBajos.includes("agua")) mejoraPotencial += 1.5;
+  if (habitosBajos.includes("sueno")) mejoraPotencial += 3;
+  if (habitosBajos.includes("ejercicio")) mejoraPotencial += 2.5;
+  if (habitosBajos.includes("estres")) mejoraPotencial += 2;
+  return Math.min(15, mejoraPotencial);
+}
+
+function mostrarResultados() {
+  const nombre = document.getElementById('nombre').value || "Usuario";
+  const edad = parseInt(document.getElementById('edad').value) || 45;
+  const sexo = document.getElementById('sexo').value;
+  
+  const score = calcularPuntuacionTotal();
+  const edadBio = calcularEdadBiologica(edad, score);
+  const diff = edadBio - edad;
+  
+  const alimentosRecomendados = recomendarAlimentos(score);
+  
+  // Identificar hábitos bajos
+  const habitosBajos = [];
+  PREGUNTAS.forEach((p, i) => {
+    if (obtenerPuntaje(p, i) <= 1) habitosBajos.push(p.id);
+  });
+  const mejoraPotencial = predecirMejora(score, habitosBajos);
+  
+  const panel = document.getElementById('resultadosPanel');
+  panel.innerHTML = `
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('tab_resumen',this)">📊 Resumen</button>
+      <button class="tab-btn" onclick="switchTab('tab_alimentos',this)">🍽️ Alimentación</button>
+      <button class="tab-btn" onclick="switchTab('tab_plan',this)">📅 Plan semanal</button>
+      <button class="tab-btn" onclick="switchTab('tab_prediccion',this)">🔮 Predicciones</button>
+    </div>
+    
+    <div id="tab_resumen" class="tab-panel active">
+      <div class="result-dashboard">
+        <div class="metric-card"><div class="big-number">${score}</div><div>Puntuación<br>longevidad</div></div>
+        <div class="metric-card"><div class="big-number">${edad}</div><div>Edad<br>cronológica</div></div>
+        <div class="metric-card"><div class="big-number" style="color:${diff<=0?'var(--accent)':'var(--red)'}">${Math.round(edadBio)}</div><div>Edad<br>biológica</div></div>
+        <div class="metric-card"><div class="big-number">${diff<=0?`-${Math.abs(diff)}`:`+${diff}`}</div><div>Diferencia<br>${diff<=0?'más joven':'mayor'}</div></div>
+      </div>
+      <div class="prediction-card">
+        <strong>🌿 ${nombre}</strong>, tu perfil de longevidad muestra ${diff<=0?'un envejecimiento más lento que la media':'oportunidades de mejora'}.
+        ${diff<=0 ? '¡Sigue así! Tus hábitos están alineados con una vida larga y saludable.' : 'Los cambios sugeridos pueden ayudarte a revertir esta diferencia.'}
+      </div>
+    </div>
+    
+    <div id="tab_alimentos" class="tab-panel">
+      <div class="card">
+        <div class="section-label">🥑 Alimentos prioritarios para tu perfil</div>
+        <div class="food-grid">
+          ${alimentosRecomendados.map(a => `
+            <div class="food-card">
+              <div class="food-name">${a.nombre}</div>
+              <div class="food-mech">✨ ${a.mecanismo}</div>
+              <div class="food-desc">${a.desc}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+    
+    <div id="tab_plan" class="tab-panel">
+      <div class="card">
+        <div class="section-label">📅 Plan de alimentación semanal</div>
+        ${generarPlanComidas(alimentosRecomendados)}
+      </div>
+    </div>
+    
+    <div id="tab_prediccion" class="tab-panel">
+      <div class="card">
+        <div class="section-label">🔮 Proyección de mejora</div>
+        <div class="prediction-card">
+          <p>✅ <strong>Si mejoras estos ${habitosBajos.length} hábitos</strong>: ${habitosBajos.map(h => `• ${h}`).join(' ')}</p>
+          <p>📈 Tu puntuación podría aumentar hasta <strong>${Math.min(100, score + mejoraPotencial * 2)} puntos</strong></p>
+          <p>⏳ Tu edad biológica podría reducirse hasta <strong>${mejoraPotencial} años</strong> en los próximos <strong>6-12 meses</strong>.</p>
+          <p style="margin-top:0.5rem; font-size:12px;">🌱 Basado en estudios de intervención en estilo de vida (Framingham, EPIC, PREDIMED).</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  panel.style.display = 'block';
+  document.getElementById('cuestionarioContainer').style.display = 'none';
+  document.getElementById('btnGenerar').style.display = 'none';
+  
+  // Scroll a resultados
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+window.switchTab = switchTab;
+
+document.getElementById('btnGenerar').addEventListener('click', () => {
+  mostrarResultados();
+});
+
+renderizarCuestionario();
+</script>
+</body>
+</html>
