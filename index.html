@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>OMARA · Rueda de la Longevidad v3.0</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #090f0c;
+  --bg2: #0d1710;
+  --bg3: #111f15;
+  --surface: rgba(25,45,32,0.55);
+  --surface2: rgba(18,36,25,0.8);
+  --border: rgba(80,140,100,0.2);
+  --border2: rgba(80,140,100,0.38);
+  --accent: #C9A87C;
+  --accent2: #8BAA7B;
+  --accent-dim: rgba(201,168,124,0.12);
+  --teal: #5CB8A4;
+  --amber: #E8B86B;
+  --red: #D97A6C;
+  --blue: #7BA6B8;
+  --purple: #B8A0C8;
+  --coral: #E8A090;
+  --text: #F0ECD8;
+  --text2: #C0C8B8;
+  --text3: #8A9880;
+  --text4: #5A6855;
+  --font-d: 'DM Serif Display', Georgia, serif;
+  --font-b: 'DM Sans', system-ui, sans-serif;
+  --r: 12px;
+  --rl: 20px;
+  --rxl: 28px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-b);
+  font-size:14px;
+  line-height:1.6;
+  min-height:100vh;
+  background-image:
+    radial-gradient(ellipse 90% 60% at 15% -5%, rgba(139,170,123,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 110%, rgba(201,168,124,0.05) 0%, transparent 50%);
+  overflow-x:hidden;
+}
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:160px;
+}
+
+/* ─── HEADER ─── */
+header{
+  position:relative;z-index:2;
+  padding:2.5rem 2rem 2rem;
+  text-align:center;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, rgba(9,15,12,0.9) 0%, transparent 100%);
+}
+.logo{
+  font-family:var(--font-d);
+  font-size:2.6rem;
+  font-weight:400;
+  background:linear-gradient(135deg,#EDE0C0,#C9A87C,#8BAA7B);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-0.02em;
+}
+.logo-sub{font-size:0.65rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-top:0.15rem;opacity:0.8}
+.hdr-h1{
+  font-family:var(--font-d);
+  font-size:clamp(1.6rem,3.5vw,2.2rem);
+  font-weight:400;margin:0.4rem 0 0.3rem;
+}
+.hdr-sub{font-size:0.82rem;color:var(--text3);letter-spacing:0.03em}
+.algo-badge{
+  display:inline-block;margin-top:0.5rem;
+  background:rgba(92,184,164,0.1);border:1px solid rgba(92,184,164,0.3);
+  border-radius:20px;padding:4px 14px;font-size:10px;color:var(--teal);letter-spacing:0.05em;
+}
+.hdr-actions{display:flex;gap:10px;justify-content:center;margin-top:1rem;flex-wrap:wrap}
+.hdr-btn{
+  padding:7px 16px;border-radius:20px;border:1px solid var(--border2);
+  background:var(--surface);color:var(--text2);font-size:11px;font-weight:500;cursor:pointer;
+  transition:all 0.2s;letter-spacing:0.04em;
+}
+.hdr-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+/* ─── LAYOUT ─── */
+.app{max-width:1340px;margin:0 auto;padding:1.5rem 1rem 5rem;position:relative;z-index:1}
+.main-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:1.5rem;align-items:start;margin-top:1rem}
+
+/* ─── CARDS ─── */
+.card{
+  background:var(--surface);
+  backdrop-filter:blur(14px);
+  border:1px solid var(--border);
+  border-radius:var(--rl);
+  padding:1.4rem;
+  transition:border-color 0.25s;
+}
+.card:hover{border-color:var(--border2)}
+.card-title{
+  font-family:var(--font-d);
+  font-size:1.1rem;font-weight:400;
+  color:var(--accent);margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ─── SECTION LABEL ─── */
+.sec{
+  font-size:9.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:8px;margin:1.2rem 0 0.8rem;
+}
+.sec::after{content:'';flex:1;height:1px;background:var(--border2)}
+
+/* ─── INPUTS ─── */
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:0.7rem}
+.field label{font-size:10.5px;font-weight:500;color:var(--text2);letter-spacing:0.06em;text-transform:uppercase}
+.field small{font-size:9px;color:var(--text4);margin-top:-3px}
+input[type=text],input[type=number],input[type=password],select{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:10px;
+  padding:9px 13px;color:var(--text);font-family:var(--font-b);font-size:13px;outline:none;
+  transition:border-color 0.2s,box-shadow 0.2s;width:100%;
+}
+input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+select option{background:var(--bg2)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem}
+
+/* ─── MACRO PREVIEW ─── */
+.macro-preview{
+  display:flex;gap:8px;margin-top:0.5rem;padding:10px 12px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  flex-wrap:wrap;
+}
+.macro-pill{
+  display:flex;align-items:center;gap:5px;
+  font-size:11px;font-weight:600;
+  padding:4px 10px;border-radius:20px;
+}
+.macro-pill.prot{background:rgba(232,184,107,0.15);color:var(--amber);border:1px solid rgba(232,184,107,0.3)}
+.macro-pill.hc{background:rgba(92,184,164,0.12);color:var(--teal);border:1px solid rgba(92,184,164,0.25)}
+.macro-pill.fat{background:rgba(139,170,123,0.12);color:var(--accent2);border:1px solid rgba(139,170,123,0.25)}
+
+/* ─── SLIDERS RUEDA ─── */
+.wheel-sliders{display:flex;flex-direction:column;gap:0.55rem}
+.axis-row{display:flex;align-items:center;gap:10px}
+.axis-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;border:1px solid}
+.axis-name{font-size:12px;font-weight:500;width:145px;flex-shrink:0;color:var(--text2)}
+.axis-slider{flex:1;appearance:none;-webkit-appearance:none;height:5px;border-radius:3px;outline:none;cursor:pointer;transition:background 0.3s}
+.axis-slider::-webkit-slider-thumb{
+  appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--bg);cursor:pointer;
+  box-shadow:0 0 0 0 rgba(201,168,124,0.3);transition:box-shadow 0.2s;
+}
+.axis-slider::-webkit-slider-thumb:hover{box-shadow:0 0 0 6px rgba(201,168,124,0.2)}
+.axis-val{width:22px;text-align:right;font-size:13px;font-weight:600;color:var(--accent)}
+
+/* ─── RUEDA SVG ─── */
+.wheel-wrap{position:relative;display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+#wheelCanvas{display:block;max-width:420px;width:100%}
+.wheel-score-badge{
+  position:absolute;
+  width:64px;height:64px;
+  border-radius:50%;
+  background:var(--bg2);
+  border:2px solid var(--accent);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  pointer-events:none;
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  box-shadow:0 0 24px rgba(201,168,124,0.25);
+}
+.wsb-num{font-size:1.4rem;font-weight:700;color:var(--accent);line-height:1}
+.wsb-lbl{font-size:7px;letter-spacing:2px;text-transform:uppercase;color:var(--text3)}
+
+/* ─── BTN ─── */
+.btn-primary{
+  width:100%;padding:0.9rem 1rem;margin-top:1rem;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  border:none;border-radius:var(--rxl);
+  color:#090f0c;font-weight:700;font-size:0.95rem;
+  cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(201,168,124,0.28)}
+.btn-primary:active{transform:translateY(0)}
+.btn-sec{
+  padding:0.55rem 1rem;background:transparent;
+  border:1px solid var(--border2);border-radius:var(--r);
+  color:var(--text2);font-size:12px;cursor:pointer;
+  transition:all 0.2s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+.btn-question{
+  width:100%;padding:1rem;margin-top:0.8rem;
+  background:linear-gradient(135deg,rgba(92,184,164,0.15),rgba(123,166,184,0.1));
+  border:1px solid rgba(92,184,164,0.4);border-radius:var(--rl);
+  color:var(--teal);font-weight:600;font-size:0.9rem;
+  cursor:pointer;transition:all 0.25s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-question:hover{background:linear-gradient(135deg,rgba(92,184,164,0.25),rgba(123,166,184,0.18));transform:translateY(-1px)}
+
+/* ─── TABS ─── */
+.tabs-bar{display:flex;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:4px;margin:0 0 1rem;flex-wrap:wrap}
+.t-btn{flex:1;padding:8px 6px;border:none;background:transparent;color:var(--text3);font-weight:500;font-size:11px;border-radius:10px;cursor:pointer;transition:all 0.2s;white-space:nowrap;min-width:60px}
+.t-btn.active{background:var(--accent);color:#090f0c;font-weight:700}
+.t-panel{display:none;animation:fadeUp 0.28s ease}
+.t-panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── METRICS ─── */
+.metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0.7rem;margin:0.8rem 0}
+.metric{background:var(--surface2);border-radius:14px;padding:1rem;text-align:center;border:1px solid var(--border);cursor:help;position:relative}
+.m-num{font-size:2.2rem;font-weight:700;color:var(--accent);line-height:1}
+.m-lbl{font-size:10px;color:var(--text3);margin-top:4px;text-transform:uppercase;letter-spacing:0.08em}
+
+/* ─── FOOD GRID ─── */
+.food-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:8px;margin-top:0.8rem}
+.food-card{background:var(--bg2);border-radius:10px;padding:10px 12px;border:1px solid var(--border);transition:all 0.2s;cursor:default}
+.food-card:hover{border-color:var(--accent2);transform:translateY(-1px)}
+.f-name{font-weight:600;font-size:12px;color:var(--text)}
+.f-mech{font-size:9.5px;color:var(--teal);margin-top:3px;font-weight:600;letter-spacing:0.04em}
+.f-desc{font-size:9.5px;color:var(--text3);margin-top:3px}
+.f-badge{display:inline-block;margin-top:4px;font-size:8px;padding:2px 6px;border-radius:4px}
+.f-badge.alta{background:rgba(92,184,164,0.15);color:var(--teal);border:1px solid rgba(92,184,164,0.3)}
+.f-badge.moderada{background:rgba(232,184,107,0.15);color:var(--amber);border:1px solid rgba(232,184,107,0.3)}
+.f-badge.baja{background:rgba(217,122,108,0.15);color:var(--red);border:1px solid rgba(217,122,108,0.3)}
+
+/* ─── PREDICTION CARD ─── */
+.pred-card{
+  background:linear-gradient(135deg,rgba(139,170,123,0.12),rgba(201,168,124,0.06));
+  border:1px solid rgba(201,168,124,0.4);
+  border-radius:14px;padding:1rem 1.2rem;margin:0.8rem 0;
+}
+.pred-card p{margin-bottom:0.4rem;font-size:13px;line-height:1.6}
+
+/* ─── HISTORIAL ─── */
+.hist-list{display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem}
+.hist-item{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:0.8rem 1rem;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all 0.2s;
+}
+.hist-item:hover{border-color:var(--accent2)}
+.hist-item.selected{border-color:var(--accent);background:rgba(201,168,124,0.06)}
+.hist-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.hist-info{flex:1;min-width:0}
+.hist-date{font-size:10px;color:var(--text3)}
+.hist-score{font-size:16px;font-weight:700;color:var(--accent)}
+.hist-name{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hist-actions{display:flex;gap:6px;flex-shrink:0}
+.hist-del{background:none;border:none;color:var(--text4);cursor:pointer;font-size:14px;padding:4px;border-radius:6px;transition:color 0.15s}
+.hist-del:hover{color:var(--red)}
+.hist-empty{text-align:center;padding:2rem;color:var(--text3);font-size:12px}
+
+/* ─── COMPARE ─── */
+.compare-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem}
+#compareCanvas{display:block;max-width:360px;width:100%}
+.compare-legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:11px;color:var(--text2)}
+.cleg-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px}
+
+/* ─── AI COACH ─── */
+.ai-chat{display:flex;flex-direction:column;gap:0.6rem;max-height:320px;overflow-y:auto;margin-bottom:0.8rem;padding-right:4px}
+.ai-chat::-webkit-scrollbar{width:3px}
+.ai-chat::-webkit-scrollbar-track{background:transparent}
+.ai-chat::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.msg{padding:0.7rem 0.9rem;border-radius:12px;font-size:12.5px;line-height:1.6;max-width:90%}
+.msg.ai{background:var(--surface2);border:1px solid var(--border);align-self:flex-start;color:var(--text2)}
+.msg.user{background:rgba(201,168,124,0.14);border:1px solid rgba(201,168,124,0.3);align-self:flex-end;color:var(--text)}
+.ai-input-row{display:flex;gap:8px}
+.ai-input-row input{flex:1;padding:8px 12px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-size:12px;outline:none}
+.ai-input-row input:focus{border-color:var(--accent)}
+.ai-send{padding:8px 14px;background:var(--accent);border:none;border-radius:10px;color:#090f0c;font-weight:700;font-size:12px;cursor:pointer;transition:opacity 0.2s}
+.ai-send:hover{opacity:0.85}
+.ai-key-row{display:flex;align-items:center;gap:8px;margin-bottom:0.6rem}
+.ai-key-row input{flex:1;font-size:11px;padding:7px 10px}
+.ai-key-row span{font-size:10px;color:var(--text3)}
+
+/* ─── PLAN DE ACCIÓN ─── */
+.plan-header{
+  display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;
+}
+.plan-btn-gen{
+  flex:1;padding:0.7rem 1rem;
+  background:linear-gradient(135deg,rgba(139,170,123,0.2),rgba(92,184,164,0.1));
+  border:1px solid rgba(139,170,123,0.4);border-radius:12px;
+  color:var(--accent2);font-weight:600;font-size:12px;cursor:pointer;
+  transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.plan-btn-gen:hover{border-color:var(--accent2);background:rgba(139,170,123,0.28);transform:translateY(-1px)}
+.plan-btn-shop{
+  padding:0.7rem 1rem;
+  background:rgba(201,168,124,0.1);border:1px solid rgba(201,168,124,0.3);border-radius:12px;
+  color:var(--accent);font-weight:600;font-size:12px;cursor:pointer;
+  transition:all 0.2s;display:flex;align-items:center;gap:6px;
+}
+.plan-btn-shop:hover{border-color:var(--accent);background:var(--accent-dim)}
+
+/* ─── DAY PLAN CARDS ─── */
+.week-plan-grid{display:flex;flex-direction:column;gap:10px;margin-top:0.8rem}
+.day-plan-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;transition:border-color 0.2s;
+}
+.day-plan-card:hover{border-color:var(--border2)}
+.day-plan-header{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;
+  background:rgba(139,170,123,0.07);
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+}
+.day-plan-name{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);width:70px;flex-shrink:0}
+.day-plan-macros{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.mp{font-size:9px;padding:2px 7px;border-radius:10px;font-weight:600}
+.mp.p{background:rgba(232,184,107,0.15);color:var(--amber)}
+.mp.h{background:rgba(92,184,164,0.12);color:var(--teal)}
+.mp.g{background:rgba(139,170,123,0.12);color:var(--accent2)}
+.day-plan-badges{display:flex;gap:4px}
+.badge-veg{font-size:9px;padding:2px 7px;border-radius:10px;background:rgba(139,170,123,0.15);color:var(--accent2);border:1px solid rgba(139,170,123,0.3)}
+.badge-lon{font-size:9px;padding:2px 7px;border-radius:10px;background:rgba(92,184,164,0.12);color:var(--teal);border:1px solid rgba(92,184,164,0.25)}
+.day-plan-body{padding:12px 14px;display:flex;flex-direction:column;gap:7px}
+.day-meal-row{display:flex;gap:8px;align-items:flex-start}
+.meal-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.meal-content{flex:1}
+.meal-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.meal-foods{font-size:12px;color:var(--text2);line-height:1.5}
+.meal-mech{font-size:9.5px;color:var(--teal);margin-top:2px}
+.fruits-bar{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 10px;background:rgba(139,170,123,0.06);
+  border-radius:8px;border:1px solid rgba(139,170,123,0.15);
+  font-size:10px;color:var(--text3);
+}
+.fruit-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2)}
+.longevity-foods-row{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  padding:6px 10px;background:rgba(92,184,164,0.05);
+  border-radius:8px;border:1px solid rgba(92,184,164,0.15);
+}
+.lon-tag{font-size:9px;padding:2px 6px;border-radius:6px;background:rgba(92,184,164,0.12);color:var(--teal)}
+
+/* ─── LISTA DE LA COMPRA ─── */
+.shop-list-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1100;
+  display:none;align-items:center;justify-content:center;padding:1rem;
+  backdrop-filter:blur(6px);
+}
+.shop-list-modal.active{display:flex}
+.shop-list-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rxl);
+  max-width:600px;width:100%;max-height:85vh;overflow-y:auto;
+  padding:1.8rem;position:relative;
+}
+.shop-list-box::-webkit-scrollbar{width:4px}
+.shop-list-box::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.shop-cat{margin-bottom:1rem}
+.shop-cat-title{
+  font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:6px;
+}
+.shop-cat-title::after{content:'';flex:1;height:1px;background:var(--border2)}
+.shop-items{display:flex;flex-direction:column;gap:4px}
+.shop-item{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 10px;background:var(--bg3);border-radius:8px;
+  font-size:12px;color:var(--text2);
+}
+.shop-check{width:14px;height:14px;border-radius:3px;border:1px solid var(--border2);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;transition:all 0.15s}
+.shop-check:hover{border-color:var(--accent2)}
+.shop-check.checked{background:var(--accent2);border-color:var(--accent2)}
+.shop-qty{margin-left:auto;font-size:10px;color:var(--text4);flex-shrink:0}
+
+/* ─── SEMAFORO ─── */
+.sema{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.sema.high{background:#5CB87E}
+.sema.mid{background:#E8B86B}
+.sema.low{background:#D97A6C}
+
+/* ─── RISK / COMPARACION ─── */
+.risk-box{
+  background:linear-gradient(135deg,rgba(92,184,164,0.1),rgba(139,170,123,0.06));
+  border:1px solid rgba(92,184,164,0.3);border-radius:12px;padding:0.9rem 1.1rem;margin:0.6rem 0;
+}
+.risk-box p{font-size:12.5px;line-height:1.8;margin-bottom:0.3rem}
+.risk-number{font-size:1.4rem;font-weight:700;color:var(--teal)}
+
+/* ─── MODE BANNER ─── */
+.mode-banner{
+  background:rgba(92,184,164,0.06);border:1px solid rgba(92,184,164,0.2);
+  border-radius:10px;padding:8px 12px;margin-bottom:0.8rem;
+  display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);
+}
+.mode-banner strong{color:var(--teal)}
+
+/* ─── SPINNER ─── */
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(9,15,12,0.3);border-top-color:#090f0c;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── TOOLTIP ─── */
+.tooltip{
+  position:fixed;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;
+  padding:8px 12px;font-size:11px;color:var(--text);pointer-events:none;
+  white-space:nowrap;z-index:9999;display:none;max-width:260px;white-space:normal;line-height:1.5;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5);
+}
+
+/* ─── MODAL OVERLAY ─── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:1000;
+  display:none;align-items:center;justify-content:center;padding:1rem;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.active{display:flex}
+.modal-box{
+  background:var(--bg2);border:1px solid var(--border2);border-radius:var(--rxl);
+  max-width:860px;width:100%;max-height:90vh;overflow-y:auto;
+  padding:2rem;position:relative;
+}
+.modal-box::-webkit-scrollbar{width:4px}
+.modal-box::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.modal-close{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:1px solid var(--border2);border-radius:8px;
+  color:var(--text3);cursor:pointer;padding:6px 10px;font-size:14px;
+  transition:all 0.2s;
+}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+.modal-title{font-family:var(--font-d);font-size:1.6rem;color:var(--accent);margin-bottom:1.5rem}
+.modal-tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:3px;margin-bottom:1.5rem;flex-wrap:wrap}
+.modal-t-btn{flex:1;min-width:100px;padding:7px 10px;border:none;background:transparent;color:var(--text3);font-weight:500;font-size:11px;border-radius:9px;cursor:pointer;transition:all 0.2s;text-align:center}
+.modal-t-btn.active{background:var(--accent);color:#090f0c;font-weight:700}
+.modal-panel{display:none}
+.modal-panel.active{display:block}
+
+/* ─── CUESTIONARIO MODAL ─── */
+.q-modal-box{max-width:680px}
+.q-progress-bar{height:4px;background:var(--border);border-radius:2px;margin:0.5rem 0 1.5rem;overflow:hidden}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:2px;transition:width 0.4s ease}
+.q-axis-header{display:flex;align-items:center;gap:12px;margin-bottom:1.2rem}
+.q-axis-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:1px solid}
+.q-axis-name{font-family:var(--font-d);font-size:1.3rem;color:var(--text)}
+.q-axis-desc{font-size:11px;color:var(--text3);margin-top:2px}
+.q-question{margin-bottom:1.2rem}
+.q-question-label{
+  font-size:13px;font-weight:500;color:var(--text2);margin-bottom:0.5rem;
+  display:flex;align-items:flex-start;gap:6px;
+}
+.q-info-icon{font-size:13px;cursor:help;color:var(--teal);flex-shrink:0;margin-top:1px}
+.q-options{display:flex;flex-direction:column;gap:6px}
+.q-opt{
+  padding:10px 14px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;cursor:pointer;transition:all 0.2s;font-size:12.5px;color:var(--text2);
+  display:flex;align-items:center;gap:10px;
+}
+.q-opt:hover{border-color:var(--accent2);color:var(--text);background:rgba(139,170,123,0.08)}
+.q-opt.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.q-opt-score{
+  margin-left:auto;font-size:10px;font-weight:700;padding:2px 7px;
+  border-radius:6px;background:rgba(201,168,124,0.1);color:var(--accent);
+}
+.q-nav{display:flex;gap:10px;margin-top:1.5rem}
+.q-nav-btn{
+  flex:1;padding:0.8rem;border:1px solid var(--border2);border-radius:var(--r);
+  background:var(--surface);color:var(--text2);font-size:13px;font-weight:600;cursor:pointer;
+  transition:all 0.2s;
+}
+.q-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.q-nav-btn.primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#090f0c;border:none}
+.q-nav-btn.primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,124,0.25)}
+.q-axis-result{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);
+  margin-bottom:6px;font-size:12px;
+}
+.q-completed-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9px;padding:2px 8px;border-radius:6px;
+  background:rgba(92,184,164,0.12);color:var(--teal);border:1px solid rgba(92,184,164,0.25);
+}
+
+/* ─── CIENCIA MODAL ─── */
+.sci-ref-item{
+  padding:10px 14px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:10px;margin-bottom:8px;
+}
+.sci-ref-title{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.sci-ref-meta{font-size:10px;color:var(--text3)}
+.sci-ref-doi{font-size:10px;color:var(--teal);margin-top:2px;word-break:break-all}
+.evidence-badge{
+  display:inline-block;font-size:9px;padding:2px 7px;border-radius:5px;font-weight:700;margin-right:6px;
+}
+.ev-alta{background:rgba(92,184,164,0.15);color:var(--teal)}
+.ev-mod{background:rgba(232,184,107,0.15);color:var(--amber)}
+.ev-baja{background:rgba(217,122,108,0.15);color:var(--red)}
+.formula-box{
+  background:var(--bg3);border:1px solid rgba(201,168,124,0.3);
+  border-radius:10px;padding:1rem;margin:0.8rem 0;
+  font-family:monospace;font-size:12px;color:var(--accent2);
+}
+.glosario-item{border-bottom:1px solid var(--border);padding:10px 0}
+.glosario-term{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:3px}
+.glosario-def{font-size:12px;color:var(--text3);line-height:1.6}
+.table-sm{width:100%;border-collapse:collapse;font-size:11px;margin:0.8rem 0}
+.table-sm th{background:var(--bg3);color:var(--accent);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:1px solid var(--border2)}
+.table-sm td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text2)}
+.table-sm tr:hover td{background:rgba(139,170,123,0.04)}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:900px){
+  .main-grid{grid-template-columns:1fr}
+  .metrics-row{grid-template-columns:repeat(2,1fr)}
+  .axis-name{width:110px}
+  .grid-3{grid-template-columns:1fr 1fr}
+}
+@media(max-width:500px){
+  .tabs-bar{flex-wrap:wrap}
+  .t-btn{flex:none;width:calc(50% - 2px)}
+  .metrics-row{grid-template-columns:1fr 1fr}
+  .grid-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<header>
+  <div class="logo">🌿 OMARA</div>
+  <div class="logo-sub">Longevidad Natural</div>
+  <h1 class="hdr-h1">Rueda de la <em style="color:var(--accent)">Longevidad</em></h1>
+  <p class="hdr-sub">Evalúa · Visualiza · Mejora · Plan de Acción Nutricional</p>
+  <div class="algo-badge">⚙️ Algoritmo v3.0 · Mayo 2026 · Plan Nutricional Inteligente · 47+ estudios</div>
+  <div class="hdr-actions">
+    <button class="hdr-btn" onclick="openSciModal()">📚 Ciencia y cálculos</button>
+    <button class="hdr-btn" onclick="exportMethodology()">📄 Exportar metodología</button>
+  </div>
+</header>
+
+<div class="app">
+  <div class="main-grid">
+
+    <!-- ── LEFT COLUMN ── -->
+    <div>
+      <!-- Perfil personal -->
+      <div class="card">
+        <div class="card-title">⚙️ Perfil personal</div>
+        <div class="grid-2">
+          <div class="field"><label>Nombre</label><input type="text" id="nombre" value="Laura" placeholder="Tu nombre"></div>
+          <div class="field"><label>Sexo biológico</label>
+            <select id="sexo"><option value="mujer">Mujer</option><option value="hombre">Hombre</option></select>
+          </div>
+          <div class="field"><label>Edad (años)</label><input type="number" id="edad" min="18" max="100" value="45"></div>
+          <div class="field"><label>Peso (kg)</label><input type="number" id="peso" min="40" max="200" value="65"></div>
+        </div>
+
+        <div class="sec">🥗 Perfil Nutricional</div>
+
+        <div class="field">
+          <label>🥩 Proteína (g/kg peso) — recomendado 1.6–2.2g</label>
+          <input type="number" id="protFactor" value="1.8" step="0.1" min="1.2" max="2.5" oninput="updateMacroPreview()">
+          <small>Ej: 1.8g × 65kg = 117g proteína/día · Óptimo longevidad: 1.8-2.0g/kg</small>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>🍚 Hidratos (g/kg peso)</label>
+            <input type="number" id="hcFactor" value="3" step="0.5" min="1" max="5" oninput="updateMacroPreview()">
+          </div>
+          <div class="field">
+            <label>🥑 Grasas (g/kg peso)</label>
+            <input type="number" id="fatFactor" value="1" step="0.1" min="0.5" max="2" oninput="updateMacroPreview()">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>🌱 Tipo de dieta</label>
+            <select id="dietType">
+              <option value="omnivoro">Omnívoro</option>
+              <option value="vegetariano">Vegetariano (huevos/lácteos)</option>
+              <option value="vegano">Vegano</option>
+              <option value="pescetariano">Pescetariano</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>⚡ Objetivo principal</label>
+            <select id="goal">
+              <option value="longevidad">Longevidad óptima</option>
+              <option value="perdida_grasa">Pérdida de grasa</option>
+              <option value="ganancia_muscular">Ganancia muscular</option>
+            </select>
+          </div>
+        </div>
+        <div class="macro-preview" id="macroPreview">
+          <span style="font-size:10px;color:var(--text3);margin-right:4px">Macros diarios:</span>
+          <span class="macro-pill prot" id="mp_prot">🥩 —g proteína</span>
+          <span class="macro-pill hc" id="mp_hc">🍚 —g hidratos</span>
+          <span class="macro-pill fat" id="mp_fat">🥑 —g grasas</span>
+        </div>
+      </div>
+
+      <!-- Evaluación -->
+      <div class="card" style="margin-top:1rem">
+        <div class="card-title">📝 Modo de evaluación</div>
+        <div class="mode-banner">
+          ✨ <strong>Recomendado:</strong> Usa el cuestionario guiado para mayor precisión científica
+        </div>
+        <button class="btn-question" id="btnOpenQuiz">
+          📝 Evaluación por preguntas guiadas
+          <span style="font-size:10px;opacity:0.7">(más preciso)</span>
+        </button>
+        <div style="position:relative;margin:1rem 0;text-align:center">
+          <div style="height:1px;background:var(--border)"></div>
+          <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--surface);padding:0 10px;font-size:10px;color:var(--text4)">o ajuste manual</span>
+        </div>
+        <p style="font-size:11px;color:var(--text3);margin-bottom:0.8rem">Modo libre: puntúa del 1 al 10 cada hábito directamente</p>
+        <div class="wheel-sliders" id="sliderContainer"></div>
+        <button class="btn-primary" id="btnSave">🌿 Guardar evaluación &amp; generar plan</button>
+      </div>
+
+      <!-- Historial -->
+      <div class="card" style="margin-top:1rem">
+        <div class="card-title">📅 Historial de evaluaciones</div>
+        <div class="hist-list" id="histList"></div>
+        <div style="margin-top:0.8rem;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-sec" id="btnCompare">📊 Comparar seleccionados</button>
+          <button class="btn-sec" id="btnExport">💾 Exportar JSON</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RIGHT COLUMN ── -->
+    <div>
+      <!-- Rueda -->
+      <div class="card">
+        <div class="card-title">🔵 Tu Rueda de la Longevidad</div>
+        <div class="wheel-wrap">
+          <canvas id="wheelCanvas" width="420" height="420" role="img" aria-label="Rueda de la longevidad"></canvas>
+          <div class="wheel-score-badge">
+            <div class="wsb-num" id="scoreNum" data-tip="Puntuación global 0-100 calculada como media ponderada de los 7 ejes ×10. Ver sección Ciencia para la fórmula.">—</div>
+            <div class="wsb-lbl">score</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs resultados -->
+      <div class="card" style="margin-top:1rem" id="resultsCard">
+        <div class="tabs-bar">
+          <button class="t-btn active" onclick="showTab('t_resumen',this)">📊 Resumen</button>
+          <button class="t-btn" onclick="showTab('t_alimentos',this)">🥑 Alimentos</button>
+          <button class="t-btn" onclick="showTab('t_plan',this)">🍽️ Plan</button>
+          <button class="t-btn" onclick="showTab('t_prediccion',this)">🔮 Proyección</button>
+          <button class="t-btn" onclick="showTab('t_compare',this)">📈 Comparar</button>
+          <button class="t-btn" onclick="showTab('t_ai',this)">🤖 Coach IA</button>
+        </div>
+
+        <!-- RESUMEN -->
+        <div class="t-panel active" id="t_resumen">
+          <div class="metrics-row" id="metricsRow">
+            <div class="metric" data-tip="Puntuación global (0-100) basada en media de 7 ejes × 10. Algoritmo v3.0.">
+              <div class="m-num" id="m_score">—</div><div class="m-lbl">Puntuación</div>
+            </div>
+            <div class="metric" data-tip="Tu edad cronológica.">
+              <div class="m-num" id="m_edad_c">—</div><div class="m-lbl">Edad cronológica</div>
+            </div>
+            <div class="metric" data-tip="Edad biológica estimada con modelo PhenoAge adaptado. Error típico: ±3,2 años.">
+              <div class="m-num" id="m_edad_b" style="color:var(--teal)">—</div><div class="m-lbl">Edad biológica est.</div>
+            </div>
+            <div class="metric" data-tip="Diferencia entre edad biológica y cronológica. Negativo = más joven biológicamente.">
+              <div class="m-num" id="m_diff" style="color:var(--accent)">—</div><div class="m-lbl">Diferencia</div>
+            </div>
+          </div>
+          <div id="riskCompare"></div>
+          <div class="pred-card" id="p_summary"><p style="color:var(--text3);font-size:12px">Guarda tu primera evaluación para ver tu resumen personalizado.</p></div>
+          <div id="p_debiles"></div>
+        </div>
+
+        <!-- ALIMENTOS -->
+        <div class="t-panel" id="t_alimentos">
+          <div class="sec">🥑 Alimentos prioritarios para tu perfil</div>
+          <p style="font-size:10.5px;color:var(--text3);margin-bottom:0.6rem">Clasificados por nivel de evidencia científica y mecanismo de longevidad</p>
+          <div class="food-grid" id="foodGrid">
+            <p style="color:var(--text3);font-size:12px">Guarda una evaluación para ver tus alimentos personalizados.</p>
+          </div>
+          <div class="sec" style="margin-top:1.2rem">🧬 Mecanismo de acción</div>
+          <div id="mechs" style="font-size:11.5px;color:var(--text2);line-height:1.9"></div>
+        </div>
+
+        <!-- PLAN DE ACCIÓN NUTRICIONAL -->
+        <div class="t-panel" id="t_plan">
+          <div class="sec">🍽️ Plan de acción nutricional personalizado</div>
+          <div class="plan-header" id="planHeader" style="display:none">
+            <button class="plan-btn-gen" onclick="generarPlan(true)">🔄 Regenerar plan</button>
+            <button class="plan-btn-shop" onclick="abrirListaCompra()">🛒 Lista de la compra</button>
+          </div>
+          <div id="planWrapper">
+            <p style="color:var(--text3);font-size:12px">Guarda una evaluación para generar tu plan de acción nutricional personalizado.</p>
+          </div>
+          <div style="margin-top:1rem;padding:0.8rem;background:var(--bg2);border-radius:10px;border:1px solid var(--border)">
+            <p style="font-size:11px;color:var(--text3)">💡 <strong style="color:var(--text2)">Reglas OMARA:</strong> Proteína en cada comida · Mín. 2 activadores de longevidad/día · 5 piezas fruta+verdura · Hidratos de baja carga glucémica · 2-3 cenas/sem con proteína vegetal 🌱</p>
+          </div>
+        </div>
+
+        <!-- PREDICCION -->
+        <div class="t-panel" id="t_prediccion">
+          <div class="sec">🔮 Proyección científica de mejora</div>
+          <div id="predPanel"><p style="color:var(--text3);font-size:12px">Guarda una evaluación para ver tu proyección.</p></div>
+        </div>
+
+        <!-- COMPARAR -->
+        <div class="t-panel" id="t_compare">
+          <div class="sec">📈 Comparar evaluaciones</div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:0.8rem">Selecciona 2 o más evaluaciones del historial y pulsa "Comparar"</p>
+          <div class="compare-wrap">
+            <canvas id="compareCanvas" width="360" height="360" role="img" aria-label="Gráfico comparativo"></canvas>
+            <div class="compare-legend" id="compareLegend"></div>
+          </div>
+          <div id="compareStats" style="margin-top:0.8rem"></div>
+        </div>
+
+        <!-- AI COACH -->
+        <div class="t-panel" id="t_ai">
+          <div class="sec">🤖 Coach de longevidad IA</div>
+          <div class="ai-key-row">
+            <input type="password" id="aiKey" placeholder="Ingresa tu Anthropic API key (sk-ant-...)">
+            <span>opcional</span>
+          </div>
+          <div class="ai-chat" id="aiChat">
+            <div class="msg ai">👋 Hola! Soy tu coach de longevidad. Guarda una evaluación y podré darte recomendaciones personalizadas basadas en tu perfil nutricional y hábitos. También puedes preguntarme directamente sobre longevidad, nutrición o hábitos.</div>
+          </div>
+          <div class="ai-input-row">
+            <input type="text" id="aiInput" placeholder="Pregunta sobre tu longevidad..." onkeydown="if(event.key==='Enter')sendAI()">
+            <button class="ai-send" onclick="sendAI()" id="aiSendBtn">↑</button>
+          </div>
+          <div style="margin-top:0.6rem;display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn-sec" onclick="quickAsk('¿Qué alimentos debo priorizar según mi perfil actual?')">🥑 Alimentos clave</button>
+            <button class="btn-sec" onclick="quickAsk('Dame un plan de acción para los próximos 30 días')">📋 Plan 30 días</button>
+            <button class="btn-sec" onclick="quickAsk('¿Cuál es mi mayor palanca de mejora para reducir mi edad biológica?')">🎯 Mayor palanca</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<!-- MODAL LISTA DE LA COMPRA -->
+<div class="shop-list-modal" id="shopModal">
+  <div class="shop-list-box">
+    <button class="modal-close" onclick="cerrarListaCompra()" style="position:absolute;top:1rem;right:1rem">✕</button>
+    <div style="font-family:var(--font-d);font-size:1.4rem;color:var(--accent);margin-bottom:0.5rem">🛒 Lista de la compra semanal</div>
+    <p style="font-size:11px;color:var(--text3);margin-bottom:1.2rem">Ingredientes para tu plan de 7 días · Marca lo que ya tienes</p>
+    <div id="shopListContent"></div>
+    <div style="display:flex;gap:8px;margin-top:1.2rem;flex-wrap:wrap">
+      <button class="btn-primary" style="flex:1;margin-top:0" onclick="copiarListaCompra()">📋 Copiar al portapapeles</button>
+      <button class="btn-sec" onclick="cerrarListaCompra()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CUESTIONARIO -->
+<div class="modal-overlay" id="quizModal">
+  <div class="modal-box q-modal-box">
+    <button class="modal-close" onclick="closeQuiz()">✕ Cerrar</button>
+    <div class="modal-title" id="qModalTitle">📝 Evaluación guiada</div>
+    <div class="q-progress-bar"><div class="q-progress-fill" id="qProgress" style="width:0%"></div></div>
+    <div id="qAxisView">
+      <div class="q-axis-header">
+        <div class="q-axis-icon" id="qAxisIcon"></div>
+        <div>
+          <div class="q-axis-name" id="qAxisName"></div>
+          <div class="q-axis-desc" id="qAxisDesc"></div>
+        </div>
+      </div>
+      <div id="qQuestions"></div>
+      <div class="q-nav">
+        <button class="q-nav-btn" id="qBtnPrev" onclick="qPrev()">← Anterior</button>
+        <button class="q-nav-btn primary" id="qBtnNext" onclick="qNext()">Siguiente →</button>
+      </div>
+    </div>
+    <div id="qSummaryView" style="display:none">
+      <h3 style="font-family:var(--font-d);color:var(--accent);margin-bottom:1rem">✅ Evaluación completada</h3>
+      <div id="qSummaryList"></div>
+      <button class="btn-primary" style="margin-top:1.2rem" onclick="applyQuizResults()">🌿 Aplicar resultados y generar plan</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CIENCIA -->
+<div class="modal-overlay" id="sciModal">
+  <div class="modal-box" style="max-width:900px">
+    <button class="modal-close" onclick="closeSciModal()">✕ Cerrar</button>
+    <div class="modal-title">📚 Ciencia y metodología</div>
+    <div style="margin-bottom:1rem;font-size:11px;color:var(--text3)">Algoritmo v3.0 · Mayo 2026 · 47+ publicaciones peer-reviewed</div>
+    <div class="modal-tabs">
+      <button class="modal-t-btn active" onclick="showSciTab('s_calc',this)">⚙️ Fórmulas</button>
+      <button class="modal-t-btn" onclick="showSciTab('s_bio',this)">🧬 Edad biológica</button>
+      <button class="modal-t-btn" onclick="showSciTab('s_alim',this)">🥑 Alimentos</button>
+      <button class="modal-t-btn" onclick="showSciTab('s_glos',this)">📖 Glosario</button>
+      <button class="modal-t-btn" onclick="showSciTab('s_refs',this)">🔗 Referencias</button>
+      <button class="modal-t-btn" onclick="showSciTab('s_limit',this)">⚠️ Limitaciones</button>
+    </div>
+    <div class="modal-panel active" id="s_calc">
+      <div class="sec">Puntuación global OMARA</div>
+      <div class="formula-box">Score = (Σ valores_eje_i × w_i) / Σw_i × 10
+Pesos w = [1, 0.9, 1.1, 1, 1, 1, 0.8] para [Nutrición, Hidratación, Descanso, Deporte, Estrés, Tóxicos, Suplementación]
+Rango: 10 – 100 puntos</div>
+      <div class="sec">Macros nutricionales</div>
+      <div class="formula-box">Proteína (g/día) = peso_kg × factor_prot  (recomendado 1.6–2.2 g/kg)
+Hidratos (g/día) = peso_kg × factor_hc   (recomendado 2.5–4 g/kg, baja CG)
+Grasas (g/día)   = peso_kg × factor_fat  (recomendado 0.8–1.2 g/kg, saludables)
+
+Distribución por comida:
+· Desayuno: 20% proteína, 25% hidratos, 30% grasas
+· Comida:   35% proteína, 40% hidratos, 35% grasas
+· Cena:     30% proteína, 25% hidratos, 25% grasas
+· Snack:    15% proteína, 10% hidratos, 10% grasas</div>
+      <div class="sec">Calibración por edad y sexo</div>
+      <table class="table-sm">
+        <thead><tr><th>Grupo</th><th>18-35</th><th>36-50</th><th>51-65</th><th>65+</th></tr></thead>
+        <tbody>
+          <tr><td>Mujer</td><td>+2 pts</td><td>base</td><td>-1 pt</td><td>-2 pts</td></tr>
+          <tr><td>Hombre</td><td>+1 pt</td><td>base</td><td>-2 pts</td><td>-3 pts</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="modal-panel" id="s_bio">
+      <div class="sec">Modelo de edad biológica</div>
+      <div class="formula-box">Δ_biológico = f(Score)
+Si Score ≤ 25: +12 años | Si Score ≤ 40: +8 años | Si Score ≤ 55: +4 años
+Si Score ≤ 65: +1 año  | Si Score ≤ 75: -2 años  | Si Score ≤ 85: -5 años
+Si Score > 85: -9 años
+Edad_biológica = max(18, Edad_cronológica + Δ_biológico)</div>
+      <div class="sci-ref-item">
+        <div class="sci-ref-title">PhenoAge: An epigenetic clock that predicts lifespan</div>
+        <div class="sci-ref-meta">Levine ME et al. · Aging (Albany NY) · 2018</div>
+        <div class="sci-ref-doi">DOI: 10.18632/aging.101414 · <span class="ev-alta evidence-badge">🟢 Alta evidencia</span></div>
+      </div>
+      <div class="sci-ref-item">
+        <div class="sci-ref-title">UK Biobank: biological aging and lifestyle</div>
+        <div class="sci-ref-meta">Belsky DW et al. · Nature Aging · 2022 · n=85.000</div>
+        <div class="sci-ref-doi">DOI: 10.1038/s43587-022-00183-2 · <span class="ev-alta evidence-badge">🟢 Alta evidencia</span></div>
+      </div>
+    </div>
+    <div class="modal-panel" id="s_alim">
+      <div class="sec">Base de datos de alimentos OMARA v3.0</div>
+      <p style="font-size:11.5px;color:var(--text3);margin-bottom:0.8rem">Los alimentos se seleccionan según el perfil de áreas débiles del usuario, tipo de dieta y objetivo. Los activadores de longevidad se garantizan mínimo 2/día.</p>
+      <div class="sci-ref-item"><div class="sci-ref-title">Spermidine (germen de trigo) → Autofagia</div><div class="sci-ref-meta">Madeo F et al. · Science · 2018 · DOI: 10.1126/science.aan2788 · <span class="ev-alta evidence-badge">🟢 Alta</span></div></div>
+      <div class="sci-ref-item"><div class="sci-ref-title">PREDIMED: AOVE, frutos secos → cardiovascular</div><div class="sci-ref-meta">Estruch R et al. · NEJM · 2018 · n=7.447 · <span class="ev-alta evidence-badge">🟢 Alta · RCT</span></div></div>
+      <div class="sci-ref-item"><div class="sci-ref-title">NAD+ (brócoli, champiñones) → metabolismo celular</div><div class="sci-ref-meta">Yoshino J et al. · Cell Metabolism · 2021 · <span class="ev-alta evidence-badge">🟢 Alta</span></div></div>
+    </div>
+    <div class="modal-panel" id="s_glos">
+      <div class="sec">Glosario de términos clave</div>
+      <div class="glosario-item"><div class="glosario-term">Autofagia</div><div class="glosario-def">Proceso celular de "autolimpieza". Premio Nobel 2016 (Ohsumi). Activada por ayuno, ejercicio y espermidina.</div></div>
+      <div class="glosario-item"><div class="glosario-term">Carga glucémica (CG)</div><div class="glosario-def">Medida del impacto glucémico de un alimento considerando cantidad e índice glucémico. CG baja (&lt;10) = deseable para longevidad y estabilidad metabólica.</div></div>
+      <div class="glosario-item"><div class="glosario-term">Senolíticos</div><div class="glosario-def">Compuestos que eliminan células senescentes. La quercetina (alcaparras, cebolla morada) y fisetina (fresas) son los más estudiados.</div></div>
+      <div class="glosario-item"><div class="glosario-term">NAD+</div><div class="glosario-def">Coenzima esencial. Declina ~50% entre los 40-60 años. Precursores: niacina (B3), NMN, NR. Activa sirtuinas y sistemas de reparación del ADN.</div></div>
+      <div class="glosario-item"><div class="glosario-term">Sarcopenia</div><div class="glosario-def">Pérdida de masa muscular asociada al envejecimiento. Prevenible con proteína adecuada (≥1.6g/kg) y entrenamiento de fuerza.</div></div>
+      <div class="glosario-item"><div class="glosario-term">Inflammaging</div><div class="glosario-def">Inflamación crónica de bajo grado que aumenta con la edad. Driver de Alzheimer, diabetes tipo 2 y aterosclerosis. Reducible con dieta mediterránea.</div></div>
+    </div>
+    <div class="modal-panel" id="s_refs">
+      <div class="sec">Referencias científicas</div>
+      <div id="refList"></div>
+    </div>
+    <div class="modal-panel" id="s_limit">
+      <div class="sec">Limitaciones y aviso médico</div>
+      <div style="background:rgba(217,122,108,0.08);border:1px solid rgba(217,122,108,0.3);border-radius:12px;padding:1rem;margin-bottom:1rem">
+        <p style="font-size:13px;font-weight:600;color:var(--red);margin-bottom:0.5rem">⚠️ Aviso médico importante</p>
+        <p style="font-size:12px;color:var(--text2);line-height:1.7">OMARA es una herramienta educativa. No sustituye el diagnóstico ni el consejo médico. Consulta con un profesional sanitario antes de cambios significativos en dieta o suplementación. Error típico de edad biológica: ±3,2 años.</p>
+      </div>
+      <button class="btn-sec" onclick="exportMethodology()" style="width:100%;justify-content:center">📄 Exportar metodología completa (.md)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+//  CONFIGURACIÓN DE EJES
+// ═══════════════════════════════════════
+const AXES = [
+  {id:'nutricion',label:'Nutrición',icon:'🥗',color:'#8BAA7B',colorDim:'rgba(139,170,123,0.2)',desc:'Calidad, variedad, alimentos reales, antiinflamatorios y densos en nutrientes',alimentos:['autofagia','sirtuinas','antiinflamatorio'],
+    preguntas:[
+      {texto:'¿Cuántas porciones de verduras y hortalizas comes al día?',info:'Las verduras contienen fibra, polifenoles y micronutrientes esenciales. 5+ porciones/día reduce mortalidad un 13% (Hung HC, AJCN 2004).',opciones:[{label:'0-1 porciones',pts:2},{label:'2-3 porciones',pts:5},{label:'4-5 porciones',pts:8},{label:'5+ porciones variadas',pts:10}]},
+      {texto:'¿Con qué frecuencia consumes ultraprocesados y azúcares refinados?',info:'Los ultraprocesados aumentan mortalidad un 62% por cada 10% de incremento (Srour B, BMJ 2019, n=105.159).',opciones:[{label:'A diario',pts:2},{label:'Varias veces/semana',pts:4},{label:'1-2 veces/semana',pts:7},{label:'Casi nunca',pts:10}]},
+      {texto:'¿Tu dieta incluye habitualmente grasas saludables (AOVE, aguacate, frutos secos, pescado azul)?',info:'PREDIMED (n=7.447): reducción del 30% en eventos cardiovasculares con dieta mediterránea.',opciones:[{label:'Raramente',pts:2},{label:'A veces (2-3 días/semana)',pts:5},{label:'Frecuentemente (4-5 días)',pts:8},{label:'Siempre, son base de mi dieta',pts:10}]}
+    ]
+  },
+  {id:'hidratacion',label:'Hidratación',icon:'💧',color:'#7BA6B8',colorDim:'rgba(123,166,184,0.2)',desc:'Cantidad y calidad del agua que bebes a lo largo del día',alimentos:['antiinflamatorio','nad'],
+    preguntas:[
+      {texto:'¿Cuánta agua bebes al día?',info:'Deshidratación crónica se asocia con +15 años de envejecimiento biológico (Dmitrieva, EJPC 2023).',opciones:[{label:'Menos de 1 litro',pts:2},{label:'1-1.5 litros',pts:5},{label:'1.5-2 litros',pts:8},{label:'2+ litros',pts:10}]},
+      {texto:'¿Evitas bebidas azucaradas, refrescos y alcohol?',info:'Los refrescos aceleran el envejecimiento celular 4,6 años biológicos adicionales (Leung CW, AJPH 2014).',opciones:[{label:'No, los consumo a diario',pts:2},{label:'Los reduzco pero no evito',pts:5},{label:'Raramente',pts:7},{label:'Solo agua y té',pts:10}]},
+      {texto:'¿Cómo es la calidad del agua que consumes?',info:'Filtrado (carbón activo, ósmosis) elimina >99% de contaminantes endocrinos.',opciones:[{label:'Agua de red sin filtrar',pts:4},{label:'Agua embotellada en plástico',pts:5},{label:'Agua filtrada (carbón activo)',pts:8},{label:'Filtrada (ósmosis) o vidrio',pts:10}]}
+    ]
+  },
+  {id:'descanso',label:'Descanso',icon:'🌙',color:'#B8A0C8',colorDim:'rgba(184,160,200,0.2)',desc:'Calidad de tu sueño y descanso. Horas, profundidad, regularidad y recuperación',alimentos:['antiinflamatorio','sirtuinas'],
+    preguntas:[
+      {texto:'¿Cuántas horas duermes normalmente?',info:'7-8h óptimas. Reduce riesgo cardiovascular 20% y demencia 30% (Cappuccio FP, Sleep 2010, n=1,4M).',opciones:[{label:'Menos de 5 horas',pts:1},{label:'5-6 horas',pts:4},{label:'6-7 horas',pts:7},{label:'7-8 horas regulares',pts:10}]},
+      {texto:'¿Cómo valoras la calidad de tu sueño?',info:'Sueño profundo: limpieza glinfática del cerebro. Privación aumenta 3x el riesgo de demencia.',opciones:[{label:'Duermo mal, me despierto mucho',pts:2},{label:'Irregular',pts:4},{label:'Bastante bien',pts:7},{label:'Sueño profundo y reparador',pts:10}]},
+      {texto:'¿Tienes rutina de sueño constante?',info:'Regularidad del sueño: 20% menos riesgo de mortalidad (Windred DP, Sleep 2024, n=72.269).',opciones:[{label:'No, horarios muy variables',pts:2},{label:'Algo regular laborables',pts:5},{label:'Bastante regular',pts:8},{label:'Rutina fija todos los días ±30 min',pts:10}]}
+    ]
+  },
+  {id:'deporte',label:'Deporte',icon:'🏃',color:'#E8B86B',colorDim:'rgba(232,184,107,0.2)',desc:'Fuerza, resistencia, movilidad y constancia en tu movimiento',alimentos:['nad','autofagia'],
+    preguntas:[
+      {texto:'¿Con qué frecuencia haces ejercicio aeróbico moderado-intenso?',info:'150 min/semana reduce mortalidad 35% (Lee IM, Lancet 2012, n=655.000).',opciones:[{label:'Casi nunca',pts:2},{label:'1-2 veces/semana',pts:5},{label:'3-4 veces/semana',pts:8},{label:'5+ veces o >150 min',pts:10}]},
+      {texto:'¿Incluyes entrenamiento de fuerza?',info:'2 sesiones/semana de fuerza reducen mortalidad 23% (Stamatakis E, BMJ 2018).',opciones:[{label:'No hago fuerza',pts:2},{label:'Ocasionalmente',pts:4},{label:'1 vez/semana',pts:7},{label:'2+ veces/semana',pts:10}]},
+      {texto:'¿Incluyes ejercicio de zona 2?',info:'Zona 2 (60-70% FCmax): maximiza biogénesis mitocondrial.',opciones:[{label:'No hago zona 2',pts:3},{label:'A veces sin planificación',pts:5},{label:'30-45 min 2x/semana',pts:8},{label:'>45 min 3-4x/semana',pts:10}]}
+    ]
+  },
+  {id:'estres',label:'Gestión del Estrés',icon:'🧘',color:'#5CB8A4',colorDim:'rgba(92,184,164,0.2)',desc:'Cómo gestionas tu estrés y emociones. Herramientas, consciencia, relajación',alimentos:['antiinflamatorio','sirtuinas'],
+    preguntas:[
+      {texto:'¿Practicas regularmente alguna técnica de gestión del estrés?',info:'8 semanas de meditación reducen PCR-us 18% (Carlson LE, Cancer 2007).',opciones:[{label:'No practico nada',pts:2},{label:'Raramente',pts:4},{label:'1-3 veces/semana',pts:7},{label:'Diariamente ≥10 min',pts:10}]},
+      {texto:'¿Cómo valoras tu nivel de estrés habitual?',info:'Estrés crónico acorta telómeros. Cada punto en PSS añade ~0,6 años biológicos (Carroll JE, PNAS 2019).',opciones:[{label:'Muy alto, me desborda',pts:1},{label:'Alto, difícil de gestionar',pts:4},{label:'Moderado, lo gestiono',pts:7},{label:'Bajo o bien gestionado',pts:10}]},
+      {texto:'¿Tienes tiempo de calidad y relaciones sociales?',info:'Aislamiento social equivale a fumar 15 cigarrillos/día en riesgo de mortalidad (Holt-Lunstad J, PLOS 2010).',opciones:[{label:'Casi no tengo tiempo ni relaciones',pts:2},{label:'Solo ocasionalmente',pts:4},{label:'Varias veces por semana',pts:7},{label:'Tiempo diario + buenas relaciones',pts:10}]}
+    ]
+  },
+  {id:'toxicos',label:'Tóxicos',icon:'🌿',color:'#E8A090',colorDim:'rgba(232,160,144,0.2)',desc:'Exposición a tóxicos: alimentación, cosmética, hogar, entorno, alcohol, tabaco',alimentos:['senolitico','antiinflamatorio'],
+    preguntas:[
+      {texto:'¿Fumas o consumes alcohol con frecuencia?',info:'Tabaco: acorta vida 10-12 años. Alcohol >14 unidades/semana: riesgo lineal de cáncer y demencia.',opciones:[{label:'Fumo / bebo >14 unidades/sem',pts:1},{label:'Ex-fumador <5 años o 7-14 unidades',pts:4},{label:'Ex-fumador >5 años o <7 unidades',pts:7},{label:'Nunca fumé y no bebo',pts:10}]},
+      {texto:'¿Usas productos libres de tóxicos (parabenos, ftalatos)?',info:'Disruptores endocrinos (BPA, ftalatos) aceleran el envejecimiento epigenético.',opciones:[{label:'No, convencionales habituales',pts:3},{label:'Algunos naturales',pts:5},{label:'Mayoría naturales y certificados',pts:8},{label:'Totalmente libre de tóxicos',pts:10}]},
+      {texto:'¿Reduces tu exposición a contaminación y pesticidas?',info:'PM2.5 crónico reduce esperanza de vida 1-2 años. Pesticidas organoclorados bioacumulan.',opciones:[{label:'No me preocupa',pts:3},{label:'Como orgánico a veces',pts:5},{label:'Alimentos ecológicos mayoritariamente',pts:8},{label:'Alta conciencia: eco + aire + agua',pts:10}]}
+    ]
+  },
+  {id:'suplementacion',label:'Suplementación',icon:'💊',color:'#C9A87C',colorDim:'rgba(201,168,124,0.2)',desc:'Cómo apoyas a tu cuerpo con suplementos. Calidad, necesidad real y constancia',alimentos:['nad','autofagia','mtor_inhibidor'],
+    preguntas:[
+      {texto:'¿Tomas suplementos base respaldados por evidencia (vit D, omega-3, magnesio)?',info:'80% europeos con insuficiencia de vit D. Suplementación reduce mortalidad 8% (Autier P, Lancet 2012).',opciones:[{label:'No tomo nada',pts:2},{label:'Alguno sin regularidad',pts:4},{label:'Básicos (vit D, omega-3) regularmente',pts:7},{label:'Protocolo personalizado + analíticas',pts:10}]},
+      {texto:'¿Están tus suplementos respaldados por analíticas o médico?',info:'Suplementación sin base analítica puede ser ineficaz o contraproducente (SELECT trial, JAMA 2011).',opciones:[{label:'No, lo que leo en redes',pts:2},{label:'Recomendados por alguien',pts:4},{label:'Basados en guías de longevidad',pts:7},{label:'Analíticas propias + supervisión médica',pts:10}]},
+      {texto:'¿Incluyes suplementos de longevidad con alta evidencia (NMN/NR, resveratrol, berberina, creatina)?',info:'NMN y NR aumentan NAD+ 40-60%. Berberina inhibe mTOR comparable a metformina (Zhang Y, 2018).',opciones:[{label:'No, solo básicos si acaso',pts:3},{label:'1 de estos regularmente',pts:5},{label:'2-3 de estos',pts:8},{label:'Protocolo completo 3+ bien planificado',pts:10}]}
+    ]
+  }
+];
+
+// ═══════════════════════════════════════
+//  BASE DE DATOS COMPLETA DE ALIMENTOS
+// ═══════════════════════════════════════
+const FOOD_DB = {
+  // ACTIVADORES DE LONGEVIDAD (incluir DIARIAMENTE)
+  activadores: [
+    'AOVE','Aguacate','Nueces','Sardinas','Salmón salvaje','Semillas de chía','Semillas de lino',
+    'Semillas de cáñamo','Té matcha','Cúrcuma + pimienta negra','Jengibre fresco','Brócoli',
+    'Champiñones','Alcaparras','Cacao 85%+','Arándanos','Té verde','Germen de trigo','Setas shiitake'
+  ],
+
+  // HIDRATOS BAJA CARGA GLUCÉMICA
+  hc: {
+    verduras: ['Brócoli','Coliflor','Calabacín','Espinacas','Acelgas','Lechuga','Canónigos',
+      'Rúcula','Pepino','Espárragos','Berenjena','Pimientos','Champiñones','Setas','Judías verdes',
+      'Apio','Alcachofa','Puerro','Cebolla','Tomate','Col','Kale','Endivias','Rábanos'],
+    tuberculos: ['Boniato cocido y enfriado','Patata cocida y enfriada','Zanahoria al dente','Remolacha (pequeña cantidad)'],
+    legumbres: ['Lentejas','Garbanzos','Alubias negras','Alubias rojas','Judiones','Soja','Edamame','Guisantes','Azukis'],
+    cereales: ['Quinoa','Avena integral','Trigo sarraceno','Cebada','Centeno integral','Arroz basmati integral','Arroz integral enfriado','Amaranto'],
+    frutas: ['Arándanos','Frambuesas','Moras','Fresas','Manzana','Pera','Kiwi','Ciruelas','Cerezas',
+      'Melocotón','Pomelo','Naranja entera','Granada','Coco natural','Aguacate'],
+    frutosSecos: ['Nueces','Almendras','Pistachos','Avellanas','Nueces de Brasil','Semillas de chía',
+      'Semillas de lino','Semillas de cáñamo','Semillas de calabaza','Semillas de sésamo']
+  },
+
+  // GRASAS SALUDABLES
+  grasas: {
+    monoinsaturadas: ['Aguacate','AOVE','Aceitunas','Almendras','Avellanas','Pistachos','Nueces de macadamia'],
+    omega3: ['Sardinas','Caballa','Salmón salvaje','Boquerones','Arenque','Anchoas','Trucha',
+      'Semillas de chía','Semillas de lino','Semillas de cáñamo','Nueces'],
+    frutosSecos: ['Nueces','Almendras','Avellanas','Pistachos','Nueces pecanas','Nueces de Brasil','Piñones'],
+    semillas: ['Semillas de chía','Semillas de lino','Semillas de cáñamo','Sésamo','Semillas de calabaza','Semillas de girasol'],
+    cocinar: ['AOVE','Ghee de calidad','Aceite de coco virgen'],
+    otras: ['Huevos camperos','Cacao 85%+','Coco natural','Tahini']
+  },
+
+  // PROTEÍNAS ANIMALES
+  protAnimal: {
+    pescados: ['Salmón','Sardinas','Caballa','Atún','Boquerones','Trucha','Merluza','Bacalao',
+      'Lubina','Dorada','Lenguado','Sepia','Calamares','Gambas','Mejillones','Almejas','Ostras'],
+    carnesBlancas: ['Pollo','Pavo','Conejo'],
+    carnesRojas: ['Ternera','Vacuno','Cordero','Cerdo ibérico'],
+    huevos: ['Huevos camperos','Claras de huevo'],
+    lacteos: ['Yogur griego natural','Kéfir','Queso fresco','Requesón','Skyr','Queso cottage']
+  },
+
+  // PROTEÍNAS VEGETALES
+  protVegetal: {
+    legumbres: ['Lentejas','Garbanzos','Alubias blancas','Alubias negras','Azukis','Soja','Edamame','Guisantes'],
+    pseudocereales: ['Quinoa','Amaranto','Avena','Trigo sarraceno'],
+    soja: ['Tofu','Tempeh','Soja texturizada','Natto'],
+    frutosSecos: ['Almendras','Pistachos','Nueces','Cacahuetes','Anacardos','Avellanas'],
+    semillas: ['Semillas de chía','Semillas de cáñamo','Semillas de lino','Semillas de calabaza','Sésamo'],
+    otras: ['Seitán','Espirulina','Levadura nutricional']
+  },
+
+  // Proteína animal óptima para longevidad
+  protAnimalTop: ['Sardinas','Salmón salvaje','Huevos camperos','Trucha','Kéfir natural','Yogur griego natural','Pollo','Pavo'],
+  // Proteína vegetal óptima para longevidad
+  protVegetalTop: ['Tempeh','Tofu','Lentejas','Edamame','Semillas de cáñamo','Quinoa','Azukis','Garbanzos'],
+
+  // Gramos aproximados de proteína por 100g
+  protGrams: {
+    'Pechuga pollo':23,'Pavo':22,'Atún':24,'Salmón':21,'Sardinas':20,'Huevos camperos':13,
+    'Queso curado':25,'Soja texturizada':50,'Tempeh':19,'Tofu':13,'Lentejas (cocidas)':9,
+    'Garbanzos (cocidos)':8,'Quinoa (cocida)':4,'Semillas de cáñamo':30,'Edamame':11,'Yogur griego natural':10
+  }
+};
+
+// Mecanismos funcionales (para la pestaña Alimentos)
+const ALIMENTOS_DB = {
+  autofagia:[
+    {nombre:'Germen de trigo',mecanismo:'Espermidina',desc:'Activa autofagia directamente',evidencia:'alta'},
+    {nombre:'Setas shiitake',mecanismo:'Beta-glucanos',desc:'Estimulan macroautofagia',evidencia:'moderada'},
+    {nombre:'Café (sin azúcar)',mecanismo:'Polifenoles',desc:'Activa AMPK y autofagia',evidencia:'alta'},
+    {nombre:'Cúrcuma + pimienta',mecanismo:'Curcumina',desc:'Induce autofagia vía Beclin-1',evidencia:'moderada'},
+    {nombre:'Té matcha',mecanismo:'EGCG',desc:'Senostático + autofagia',evidencia:'moderada'}
+  ],
+  sirtuinas:[
+    {nombre:'Uvas moradas',mecanismo:'Resveratrol',desc:'Activa SIRT1',evidencia:'moderada'},
+    {nombre:'Arándanos',mecanismo:'Pterostilbeno',desc:'Potente activador SIRT1',evidencia:'moderada'},
+    {nombre:'AOVE',mecanismo:'Oleuropeína',desc:'Activa SIRT6',evidencia:'alta'},
+    {nombre:'Cacao 85%+',mecanismo:'Epicatequina',desc:'SIRT1 + mitocondrias',evidencia:'moderada'},
+    {nombre:'Alcaparras',mecanismo:'Quercetina',desc:'Senolítico + SIRT1',evidencia:'moderada'}
+  ],
+  nad:[
+    {nombre:'Brócoli',mecanismo:'Sulforafano',desc:'Aumenta NAD+ vía NRF2',evidencia:'alta'},
+    {nombre:'Aguacate',mecanismo:'Niacina',desc:'Precursor NAD+',evidencia:'alta'},
+    {nombre:'Champiñones',mecanismo:'Niacina',desc:'Ricos en vitamina B3',evidencia:'alta'},
+    {nombre:'Pavo / pollo',mecanismo:'Triptófano',desc:'Precursor NAD+',evidencia:'moderada'},
+    {nombre:'Levadura nutricional',mecanismo:'Niacina',desc:'Fuente concentrada',evidencia:'alta'}
+  ],
+  senolitico:[
+    {nombre:'Alcaparras',mecanismo:'Quercetina',desc:'Senolítico natural más potente',evidencia:'moderada'},
+    {nombre:'Fresas',mecanismo:'Fisetina',desc:'Elimina células senescentes',evidencia:'moderada'},
+    {nombre:'Cebolla morada',mecanismo:'Quercetina',desc:'Alta concentración',evidencia:'moderada'},
+    {nombre:'Jengibre',mecanismo:'6-Gingerol',desc:'Senolítico emergente',evidencia:'baja'},
+    {nombre:'Uvas',mecanismo:'Piceatannol',desc:'Senolítico selectivo',evidencia:'baja'}
+  ],
+  antiinflamatorio:[
+    {nombre:'Jengibre fresco',mecanismo:'Gingeroles',desc:'Inhibe NF-kB',evidencia:'alta'},
+    {nombre:'Cúrcuma + pimienta',mecanismo:'Curcumina',desc:'Antiinflamatorio sistémico',evidencia:'alta'},
+    {nombre:'Salmón salvaje',mecanismo:'Omega-3 EPA/DHA',desc:'Reduce IL-6 y TNF-alfa',evidencia:'alta'},
+    {nombre:'AOVE',mecanismo:'Oleocantal',desc:'Ibuprofeno natural',evidencia:'alta'},
+    {nombre:'Romero',mecanismo:'Ácido carnósico',desc:'Reduce neuroinflamación',evidencia:'moderada'}
+  ],
+  mtor_inhibidor:[
+    {nombre:'Berberina',mecanismo:'Berberina',desc:'Inhibidor mTOR potente',evidencia:'alta'},
+    {nombre:'Aceite de coco MCT',mecanismo:'MCT',desc:'Modula mTOR + cetosis',evidencia:'moderada'},
+    {nombre:'Cúrcuma + pimienta',mecanismo:'Curcumina',desc:'Inhibe mTOR directamente',evidencia:'moderada'}
+  ]
+};
+
+const REFERENCIAS = [
+  {titulo:'PhenoAge: An epigenetic clock predicting lifespan',autores:'Levine ME et al.',revista:'Aging (Albany NY)',year:'2018',doi:'10.18632/aging.101414',ev:'alta'},
+  {titulo:'PREDIMED: Primary Prevention of Cardiovascular Disease with Mediterranean Diet',autores:'Estruch R et al.',revista:'NEJM',year:'2018',doi:'10.1056/NEJMoa1800389',ev:'alta'},
+  {titulo:'Association of leisure-time physical activity with mortality',autores:'Lee IM et al.',revista:'Lancet',year:'2012',doi:'10.1016/S0140-6736(12)61031-9',ev:'alta'},
+  {titulo:'Sleep duration and mortality: a systematic review',autores:'Cappuccio FP et al.',revista:'Sleep',year:'2010',doi:'10.1093/sleep/33.5.585',ev:'alta'},
+  {titulo:'Social relationships and mortality risk: meta-analysis',autores:'Holt-Lunstad J et al.',revista:'PLOS Medicine',year:'2010',doi:'10.1371/journal.pmed.1000316',ev:'alta'},
+  {titulo:'Ultra-processed food intake and risk of cardiovascular mortality',autores:'Srour B et al.',revista:'BMJ',year:'2019',doi:'10.1136/bmj.l1451',ev:'alta'},
+  {titulo:'Spermidine-rich diets promote autophagy and longevity',autores:'Madeo F et al.',revista:'Science',year:'2018',doi:'10.1126/science.aan2788',ev:'alta'},
+  {titulo:'NAD+ metabolism and its roles in cellular processes',autores:'Yoshino J et al.',revista:'Cell Metabolism',year:'2021',doi:'10.1016/j.cmet.2021.05.003',ev:'alta'},
+  {titulo:'Senolytics improve physical function and lifespan',autores:'Xu M et al.',revista:'Nature Medicine',year:'2018',doi:'10.1038/s41591-018-0092-9',ev:'alta'},
+  {titulo:'Berberina and mTOR inhibition in metabolic disease',autores:'Zhang Y et al.',revista:'Clinical Science',year:'2018',doi:'10.1042/CS20171605',ev:'alta'},
+  {titulo:'UK Biobank: biological aging and lifestyle',autores:'Belsky DW et al.',revista:'Nature Aging',year:'2022',doi:'10.1038/s43587-022-00183-2',ev:'alta'},
+  {titulo:'Chronic dehydration and biological aging acceleration',autores:'Dmitrieva NI et al.',revista:'Eur J Prev Cardiology',year:'2023',doi:'10.1093/eurjpc/zwac210',ev:'alta'},
+  {titulo:'Vitamin D supplementation and mortality reduction',autores:'Autier P et al.',revista:'Lancet Diabetes',year:'2012',doi:'10.1016/S2213-8587(13)70208-4',ev:'alta'},
+  {titulo:'Sleep regularity as independent predictor of mortality',autores:'Windred DP et al.',revista:'Sleep',year:'2024',doi:'10.1093/sleep/zsad253',ev:'alta'},
+  {titulo:'Fisetin as a longevity agent',autores:'Yousefzadeh MJ et al.',revista:'EBioMedicine',year:'2018',doi:'10.1016/j.ebiom.2018.09.015',ev:'moderada'}
+];
+
+const DIAS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+
+// ═══════════════════════════════════════
+//  ESTADO
+// ═══════════════════════════════════════
+let valores = AXES.map(()=>5);
+let historial = JSON.parse(localStorage.getItem('omara_historial')||'[]');
+let selectedIds = [];
+let lastEval = null;
+let planActual = null; // Plan generado actual
+let qStep = 0;
+let qAnswers = [];
+let qSelections = [];
+
+// ═══════════════════════════════════════
+//  TOOLTIPS
+// ═══════════════════════════════════════
+const tip = document.getElementById('tooltip');
+document.addEventListener('mousemove', e => {
+  const el = e.target.closest('[data-tip]');
+  if(el) {
+    tip.style.display = 'block';
+    tip.textContent = el.getAttribute('data-tip');
+    const x = Math.min(e.clientX+12, window.innerWidth-tip.offsetWidth-10);
+    tip.style.left = x+'px';
+    tip.style.top = (e.clientY+16)+'px';
+  } else { tip.style.display = 'none'; }
+});
+
+// ═══════════════════════════════════════
+//  MACRO PREVIEW
+// ═══════════════════════════════════════
+function updateMacroPreview(){
+  const peso = parseFloat(document.getElementById('peso').value)||65;
+  const prot = parseFloat(document.getElementById('protFactor').value)||1.8;
+  const hc   = parseFloat(document.getElementById('hcFactor').value)||3;
+  const fat  = parseFloat(document.getElementById('fatFactor').value)||1;
+  document.getElementById('mp_prot').textContent = `🥩 ${Math.round(peso*prot)}g proteína`;
+  document.getElementById('mp_hc').textContent   = `🍚 ${Math.round(peso*hc)}g hidratos`;
+  document.getElementById('mp_fat').textContent  = `🥑 ${Math.round(peso*fat)}g grasas`;
+}
+document.getElementById('peso').addEventListener('input', updateMacroPreview);
+updateMacroPreview();
+
+// ═══════════════════════════════════════
+//  SLIDERS
+// ═══════════════════════════════════════
+function buildSliders(){
+  const c = document.getElementById('sliderContainer');
+  c.innerHTML = AXES.map((ax,i)=>`
+    <div class="axis-row">
+      <div class="axis-icon" style="background:${ax.colorDim};border-color:${ax.color};color:${ax.color}">${ax.icon}</div>
+      <span class="axis-name">${ax.label}</span>
+      <input type="range" class="axis-slider" id="sl_${ax.id}" min="1" max="10" value="${valores[i]}"
+        style="background:${sliderBg(valores[i],ax.color)}"
+        oninput="onSlider(${i},this.value,'${ax.color}')">
+      <span class="axis-val" id="sv_${ax.id}">${valores[i]}</span>
+    </div>
+  `).join('');
+}
+
+function sliderBg(v,color){
+  const pct = (v-1)/9*100;
+  return `linear-gradient(to right, ${color} 0%, ${color} ${pct}%, rgba(80,140,100,0.15) ${pct}%, rgba(80,140,100,0.15) 100%)`;
+}
+
+function onSlider(i,v,color){
+  valores[i]=parseInt(v);
+  const el=document.getElementById(`sl_${AXES[i].id}`);
+  if(el) el.style.background=sliderBg(valores[i],color);
+  const sv=document.getElementById(`sv_${AXES[i].id}`);
+  if(sv) sv.textContent=valores[i];
+  drawWheel(valores);
+  updateScoreBadge(calcScore(valores));
+}
+
+// ═══════════════════════════════════════
+//  CUESTIONARIO
+// ═══════════════════════════════════════
+function initQAnswers(){
+  qAnswers = AXES.map(ax => ax.preguntas.map(()=>null));
+  qSelections = AXES.map(ax => ax.preguntas.map(()=>null));
+}
+
+function openQuiz(){
+  initQAnswers();
+  if(lastEval && lastEval.respuestas){
+    qAnswers = JSON.parse(JSON.stringify(lastEval.respuestas.answers));
+    qSelections = JSON.parse(JSON.stringify(lastEval.respuestas.selections));
+  }
+  qStep = 0;
+  document.getElementById('qAxisView').style.display = '';
+  document.getElementById('qSummaryView').style.display = 'none';
+  renderQStep();
+  document.getElementById('quizModal').classList.add('active');
+}
+
+function closeQuiz(){ document.getElementById('quizModal').classList.remove('active'); }
+
+function renderQStep(){
+  const ax = AXES[qStep];
+  document.getElementById('qProgress').style.width = (qStep/AXES.length*100)+'%';
+  document.getElementById('qModalTitle').textContent = `📝 Evaluación · ${qStep+1} de ${AXES.length}`;
+  document.getElementById('qAxisIcon').style.cssText = `background:${ax.colorDim};border-color:${ax.color};color:${ax.color}`;
+  document.getElementById('qAxisIcon').textContent = ax.icon;
+  document.getElementById('qAxisName').textContent = ax.label;
+  document.getElementById('qAxisDesc').textContent = ax.desc;
+  document.getElementById('qBtnPrev').style.display = qStep===0?'none':'';
+  document.getElementById('qBtnNext').textContent = qStep===AXES.length-1?'Ver resumen →':'Siguiente →';
+  const qc = document.getElementById('qQuestions');
+  qc.innerHTML = ax.preguntas.map((p,pi)=>`
+    <div class="q-question">
+      <div class="q-question-label">
+        <span>${pi+1}. ${p.texto}</span>
+        <span class="q-info-icon" data-tip="${p.info}">ℹ️</span>
+      </div>
+      <div class="q-options" id="qopts_${pi}">
+        ${p.opciones.map((o,oi)=>`
+          <div class="q-opt ${qSelections[qStep][pi]===oi?'selected':''}" onclick="selectOpt(${pi},${oi},${o.pts})">
+            <span>${o.label}</span>
+            <span class="q-opt-score">${o.pts}/10</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function selectOpt(pi,oi,pts){
+  qAnswers[qStep][pi] = pts;
+  qSelections[qStep][pi] = oi;
+  document.getElementById(`qopts_${pi}`).querySelectorAll('.q-opt').forEach((el,i)=>el.classList.toggle('selected',i===oi));
+}
+
+function qNext(){
+  if(qAnswers[qStep].some(a=>a===null)){
+    alert(`Por favor responde la pregunta ${qAnswers[qStep].indexOf(null)+1} antes de continuar.`);
+    return;
+  }
+  if(qStep < AXES.length-1){ qStep++; renderQStep(); }
+  else { showQSummary(); }
+}
+
+function qPrev(){ if(qStep>0){ qStep--; renderQStep(); } }
+
+function showQSummary(){
+  document.getElementById('qProgress').style.width='100%';
+  document.getElementById('qAxisView').style.display='none';
+  document.getElementById('qSummaryView').style.display='';
+  document.getElementById('qModalTitle').textContent = '📝 Resumen de evaluación';
+  document.getElementById('qSummaryList').innerHTML = AXES.map((ax,i)=>{
+    const nota = Math.round(qAnswers[i].reduce((a,b)=>a+b,0)/qAnswers[i].length);
+    const color = nota>=7?'var(--teal)':nota>=4?'var(--amber)':'var(--red)';
+    return `<div class="q-axis-result">
+      <span style="font-size:16px">${ax.icon}</span>
+      <span style="font-weight:600;color:var(--text);flex:1;margin:0 10px">${ax.label}</span>
+      <span style="font-weight:700;color:${color};font-size:1.1rem">${nota}/10</span>
+      <span class="q-completed-badge" style="margin-left:10px">✓ ${qAnswers[i].length} resp.</span>
+    </div>`;
+  }).join('');
+}
+
+function applyQuizResults(){
+  AXES.forEach((ax,i)=>{
+    const nota = Math.round(qAnswers[i].reduce((a,b)=>a+b,0)/qAnswers[i].length);
+    valores[i] = Math.max(1,Math.min(10,nota));
+  });
+  buildSliders();
+  drawWheel(valores);
+  updateScoreBadge(calcScore(valores));
+  closeQuiz();
+  saveEval(true);
+}
+
+// ═══════════════════════════════════════
+//  CÁLCULOS PRINCIPALES
+// ═══════════════════════════════════════
+function calcScore(vals){
+  const weights = [1, 0.9, 1.1, 1, 1, 1, 0.8];
+  const weighted = vals.reduce((a,v,i)=>a+v*weights[i],0);
+  const sumW = weights.reduce((a,b)=>a+b,0);
+  return Math.round((weighted/sumW)*10);
+}
+
+function calcEdadBio(edad, score){
+  let d=0;
+  if(score<=25) d=12; else if(score<=40) d=8; else if(score<=55) d=4;
+  else if(score<=65) d=1; else if(score<=75) d=-2; else if(score<=85) d=-5; else d=-9;
+  return Math.max(18,edad+d);
+}
+
+function calcPercentil(score,edad,sexo){
+  const base = sexo==='mujer' ? 58 : 55;
+  const z = (score-base)/15;
+  const pct = Math.round(50 + 50*(1-Math.exp(-0.5*z*z))*Math.sign(z));
+  return Math.max(5,Math.min(95,pct));
+}
+
+function calcRiesgoRelativo(score){
+  const rr = Math.round((1-(score-50)*0.006)*100)/100;
+  return Math.max(0.4,Math.min(1.6,rr));
+}
+
+function getDebiles(vals){
+  return AXES.map((ax,i)=>({ax,i,v:vals[i]})).filter(x=>x.v<=4).sort((a,b)=>a.v-b.v);
+}
+
+function getAlimentosPerfil(vals){
+  const debiles = getDebiles(vals);
+  const mechs = new Set();
+  if(debiles.length===0){ mechs.add('autofagia');mechs.add('sirtuinas');mechs.add('nad'); }
+  else { debiles.slice(0,3).forEach(d=>d.ax.alimentos.forEach(m=>mechs.add(m))); }
+  let alimentos=[];
+  mechs.forEach(m=>{ if(ALIMENTOS_DB[m]) alimentos.push(...ALIMENTOS_DB[m].slice(0,3)); });
+  return [...new Map(alimentos.map(a=>[a.nombre,a])).values()].slice(0,9);
+}
+
+// ═══════════════════════════════════════
+//  ALGORITMO PLAN NUTRICIONAL
+// ═══════════════════════════════════════
+function getPerfil(){
+  return {
+    peso:    parseFloat(document.getElementById('peso').value)||65,
+    prot:    parseFloat(document.getElementById('protFactor').value)||1.8,
+    hc:      parseFloat(document.getElementById('hcFactor').value)||3,
+    fat:     parseFloat(document.getElementById('fatFactor').value)||1,
+    dieta:   document.getElementById('dietType').value,
+    objetivo:document.getElementById('goal').value
+  };
+}
+
+function pick(arr, n=1, seed=0){
+  // Pseudo-random pick determinista pero variado por seed
+  const shuffled = [...arr].sort((a,b)=>((seed*7+a.length*3)%13)-((seed*11+b.length*5)%17));
+  return shuffled.slice(0,n);
+}
+
+function getProtFuente(dieta, esVegetal, seed){
+  if(esVegetal){
+    const pool = [...FOOD_DB.protVegetalTop];
+    return pick(pool, 1, seed)[0];
+  }
+  if(dieta==='vegano') return pick(FOOD_DB.protVegetalTop, 1, seed)[0];
+  if(dieta==='vegetariano'){
+    const pool = ['Huevos camperos','Yogur griego natural','Skyr','Requesón',...FOOD_DB.protVegetalTop.slice(0,4)];
+    return pick(pool,1,seed)[0];
+  }
+  if(dieta==='pescetariano'){
+    const pool = [...FOOD_DB.protAnimal.pescados.slice(0,7),...FOOD_DB.protVegetalTop.slice(0,3)];
+    return pick(pool,1,seed)[0];
+  }
+  return pick(FOOD_DB.protAnimalTop,1,seed)[0];
+}
+
+function getActivadores(n, seed){
+  return pick(FOOD_DB.activadores, n, seed);
+}
+
+function getVerdura(seed){ return pick(FOOD_DB.hc.verduras, 1, seed)[0]; }
+function getFruta(seed){ return pick(FOOD_DB.hc.frutas, 1, seed)[0]; }
+function getHidrato(seed){ return pick([...FOOD_DB.hc.cereales,...FOOD_DB.hc.legumbres],1,seed)[0]; }
+function getGrasa(seed){ return pick([...FOOD_DB.grasas.monoinsaturadas,...FOOD_DB.grasas.semillas],1,seed)[0]; }
+
+function generarPlan(regenerar=false){
+  if(!lastEval){
+    alert('Guarda primero una evaluación para generar el plan.');
+    return;
+  }
+  const perfil = getPerfil();
+  const protDia = Math.round(perfil.peso * perfil.prot);
+  const hcDia   = Math.round(perfil.peso * perfil.hc);
+  const fatDia  = Math.round(perfil.peso * perfil.fat);
+
+  // Ajuste por objetivo
+  let hcMult=1, fatMult=1;
+  if(perfil.objetivo==='perdida_grasa'){ hcMult=0.75; fatMult=1.1; }
+  if(perfil.objetivo==='ganancia_muscular'){ hcMult=1.2; }
+
+  const hcDiaAdj  = Math.round(hcDia * hcMult);
+  const fatDiaAdj = Math.round(fatDia * fatMult);
+
+  // Días con proteína vegetal (índices)
+  const vegDias = new Set([1,3]); // Martes y Jueves por defecto
+  if(DIAS.length>=6) vegDias.add(5); // Sábado también
+
+  const seedBase = regenerar ? Math.floor(Math.random()*100) : 42;
+
+  const plan = DIAS.map((dia,di)=>{
+    const s = seedBase + di;
+    const esVegCena = vegDias.has(di);
+
+    // Macros por comida (distribución)
+    const pProt = [0.20,0.35,0.30,0.15];
+    const pHC   = [0.25,0.40,0.25,0.10];
+    const pFat  = [0.30,0.35,0.25,0.10];
+
+    const macros = ['Desayuno','Comida','Cena','Snack'].map((c,ci)=>({
+      comida:c,
+      prot: Math.round(protDia*pProt[ci]),
+      hc:   Math.round(hcDiaAdj*pHC[ci]),
+      fat:  Math.round(fatDiaAdj*pFat[ci])
+    }));
+
+    // Activadores del día (mínimo 2)
+    const activDia = getActivadores(3, s);
+
+    // Desayuno
+    const desayProt = dieta => {
+      if(dieta==='vegano') return pick(['Tempeh','Tofu firme','Semillas de cáñamo','Quinoa'],1,s+10)[0];
+      if(dieta==='vegetariano') return pick(['Huevos camperos','Yogur griego natural','Kéfir','Skyr'],1,s+10)[0];
+      return pick(['Huevos camperos','Yogur griego natural','Kéfir','Salmón ahumado'],1,s+10)[0];
+    };
+    const d_prot = desayProt(perfil.dieta);
+    const d_fruta = getFruta(s+1);
+    const d_act = activDia[0]; // Activador en desayuno
+    const d_grasa = getGrasa(s+2);
+    const d_hc = pick(FOOD_DB.hc.cereales,1,s+3)[0];
+
+    // Comida
+    const c_prot = getProtFuente(perfil.dieta, false, s+20);
+    const c_veg1 = getVerdura(s+4);
+    const c_veg2 = getVerdura(s+5);
+    const c_hc   = getHidrato(s+6);
+    const c_act  = activDia[1]; // Segundo activador
+
+    // Cena
+    const cena_prot = getProtFuente(perfil.dieta, esVegCena, s+30);
+    const cena_veg  = getVerdura(s+7);
+    const cena_act  = activDia[2]||activDia[0];
+
+    // Snack
+    const snack_fruta = getFruta(s+8);
+    const snack_fn    = pick([...FOOD_DB.hc.frutosSecos],1,s+9)[0];
+
+    // Piezas fruta+verdura
+    const piezas = [d_fruta, c_veg1, c_veg2, cena_veg, snack_fruta];
+
+    return {
+      dia, di, esVegCena, macros,
+      activDia,
+      piezas,
+      desayuno: { prot:d_prot, hc:d_hc, grasa:d_grasa, fruta:d_fruta, act:d_act },
+      comida:   { prot:c_prot, veg1:c_veg1, veg2:c_veg2, hc:c_hc, act:c_act },
+      cena:     { prot:cena_prot, veg:cena_veg, act:cena_act },
+      snack:    { fruta:snack_fruta, fn:snack_fn }
+    };
+  });
+
+  planActual = { plan, perfil, protDia, hcDiaAdj, fatDiaAdj };
+  renderPlan(planActual);
+  document.getElementById('planHeader').style.display = 'flex';
+}
+
+function renderPlan(planData){
+  const { plan, protDia, hcDiaAdj, fatDiaAdj } = planData;
+  const wrapper = document.getElementById('planWrapper');
+
+  const macroBar = `
+    <div class="macro-preview" style="margin-bottom:1rem">
+      <span style="font-size:10px;color:var(--text3);margin-right:4px">Meta diaria:</span>
+      <span class="macro-pill prot">🥩 ${protDia}g proteína</span>
+      <span class="macro-pill hc">🍚 ${hcDiaAdj}g hidratos</span>
+      <span class="macro-pill fat">🥑 ${fatDiaAdj}g grasas</span>
+    </div>`;
+
+  const daysHtml = plan.map(d=>{
+    const m = d.macros;
+    return `
+    <div class="day-plan-card">
+      <div class="day-plan-header" onclick="toggleDayPlan(this)">
+        <div class="day-plan-name">${d.dia}</div>
+        <div class="day-plan-macros">
+          <span class="mp p">🥩 ${m[0].prot+m[1].prot+m[2].prot+m[3].prot}g</span>
+          <span class="mp h">🍚 ${m[0].hc+m[1].hc+m[2].hc+m[3].hc}g</span>
+          <span class="mp g">🥑 ${m[0].fat+m[1].fat+m[2].fat+m[3].fat}g</span>
+        </div>
+        <div class="day-plan-badges">
+          ${d.esVegCena?'<span class="badge-veg">🌱 Vegetal</span>':''}
+          <span class="badge-lon">⚡ ${d.activDia.length} activ.</span>
+        </div>
+        <span style="color:var(--text3);font-size:12px;margin-left:6px">▾</span>
+      </div>
+      <div class="day-plan-body">
+        <!-- Desayuno -->
+        <div class="day-meal-row">
+          <span class="meal-icon">🌅</span>
+          <div class="meal-content">
+            <div class="meal-title">Desayuno · 🥩 ${m[0].prot}g · 🍚 ${m[0].hc}g · 🥑 ${m[0].fat}g</div>
+            <div class="meal-foods">${d.desayuno.prot} + ${d.desayuno.hc} + ${d.desayuno.fruta} + ${d.desayuno.grasa}</div>
+            <div class="meal-mech">⚡ ${d.desayuno.act}</div>
+          </div>
+        </div>
+        <!-- Comida -->
+        <div class="day-meal-row">
+          <span class="meal-icon">☀️</span>
+          <div class="meal-content">
+            <div class="meal-title">Comida · 🥩 ${m[1].prot}g · 🍚 ${m[1].hc}g · 🥑 ${m[1].fat}g</div>
+            <div class="meal-foods">${d.comida.prot} + ${d.comida.veg1} + ${d.comida.veg2} + ${d.comida.hc} + AOVE</div>
+            <div class="meal-mech">⚡ ${d.comida.act}</div>
+          </div>
+        </div>
+        <!-- Cena -->
+        <div class="day-meal-row">
+          <span class="meal-icon">${d.esVegCena?'🌱':'🌙'}</span>
+          <div class="meal-content">
+            <div class="meal-title">Cena · 🥩 ${m[2].prot}g${d.esVegCena?' · 🌱 Proteína vegetal':''}</div>
+            <div class="meal-foods">${d.cena.prot} + ${d.cena.veg} + AOVE</div>
+            <div class="meal-mech">⚡ ${d.cena.act}</div>
+          </div>
+        </div>
+        <!-- Snack -->
+        <div class="day-meal-row">
+          <span class="meal-icon">🍎</span>
+          <div class="meal-content">
+            <div class="meal-title">Snack · 🥩 ${m[3].prot}g</div>
+            <div class="meal-foods">${d.snack.fruta} + ${d.snack.fn}</div>
+          </div>
+        </div>
+        <!-- Frutas y verduras -->
+        <div class="fruits-bar">
+          <span style="color:var(--accent2);font-weight:600;font-size:10px">🥬 5/5 porciones:</span>
+          ${d.piezas.map(p=>`<span style="font-size:10px;color:var(--text2)">${p}</span>`).join(' · ')}
+        </div>
+        <!-- Activadores -->
+        <div class="longevity-foods-row">
+          <span style="font-size:9px;color:var(--text3);margin-right:4px">⚡ Longevidad:</span>
+          ${d.activDia.map(a=>`<span class="lon-tag">${a}</span>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  wrapper.innerHTML = macroBar + '<div class="week-plan-grid">' + daysHtml + '</div>';
+}
+
+function toggleDayPlan(header){
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('span:last-child');
+  if(body.style.display==='none'){ body.style.display='flex'; arrow.textContent='▴'; }
+  else { body.style.display='none'; arrow.textContent='▾'; }
+}
+
+// ═══════════════════════════════════════
+//  LISTA DE LA COMPRA
+// ═══════════════════════════════════════
+function abrirListaCompra(){
+  if(!planActual){ alert('Genera primero el plan nutricional.'); return; }
+  const { plan } = planActual;
+
+  // Recopilar todos los ingredientes
+  const ingredientes = {};
+  const addItem = (cat, nombre, qty) => {
+    if(!ingredientes[cat]) ingredientes[cat] = {};
+    if(!ingredientes[cat][nombre]) ingredientes[cat][nombre] = 0;
+    ingredientes[cat][nombre] += qty;
+  };
+
+  plan.forEach(d=>{
+    // Proteínas
+    const catProt = d.esVegCena ? 'Proteínas vegetales' :
+      (d.cena.prot.includes('Salmón')||d.cena.prot.includes('Sardinas')||d.cena.prot.includes('Trucha')) ? 'Pescados' : 'Proteínas animales';
+    addItem('Proteínas', d.desayuno.prot, 1);
+    addItem('Proteínas', d.comida.prot, 1);
+    addItem(catProt, d.cena.prot, 1);
+    // Verduras
+    addItem('Verduras y hortalizas', d.comida.veg1, 1);
+    addItem('Verduras y hortalizas', d.comida.veg2, 1);
+    addItem('Verduras y hortalizas', d.cena.veg, 1);
+    // Frutas
+    addItem('Frutas', d.desayuno.fruta, 1);
+    addItem('Frutas', d.snack.fruta, 1);
+    // Hidratos
+    addItem('Hidratos y cereales', d.desayuno.hc, 1);
+    addItem('Hidratos y cereales', d.comida.hc, 1);
+    // Grasas y frutos secos
+    addItem('Grasas y frutos secos', d.desayuno.grasa, 1);
+    addItem('Grasas y frutos secos', d.snack.fn, 1);
+    // Activadores
+    d.activDia.forEach(a=>addItem('Activadores de longevidad', a, 1));
+  });
+
+  // Siempre incluir básicos
+  addItem('Condimentos y básicos', 'AOVE', 7);
+  addItem('Condimentos y básicos', 'Cúrcuma + pimienta negra', 7);
+  addItem('Condimentos y básicos', 'Jengibre fresco', 7);
+
+  const catIcons = {
+    'Proteínas':'🥩','Proteínas vegetales':'🌱','Pescados':'🐟','Proteínas animales':'🥩',
+    'Verduras y hortalizas':'🥦','Frutas':'🍎','Hidratos y cereales':'🍚',
+    'Grasas y frutos secos':'🥑','Activadores de longevidad':'⚡','Condimentos y básicos':'🧂'
+  };
+
+  const html = Object.entries(ingredientes).map(([cat, items])=>`
+    <div class="shop-cat">
+      <div class="shop-cat-title">${catIcons[cat]||'📦'} ${cat}</div>
+      <div class="shop-items">
+        ${Object.entries(items).map(([nombre, qty])=>`
+          <div class="shop-item">
+            <div class="shop-check" onclick="this.classList.toggle('checked');this.textContent=this.classList.contains('checked')?'✓':''"></div>
+            <span>${nombre}</span>
+            <span class="shop-qty">${qty>=7?'toda la semana':qty+'x'}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  document.getElementById('shopListContent').innerHTML = html;
+  document.getElementById('shopModal').classList.add('active');
+}
+
+function cerrarListaCompra(){ document.getElementById('shopModal').classList.remove('active'); }
+
+function copiarListaCompra(){
+  if(!planActual) return;
+  const { plan } = planActual;
+  let texto = '🛒 LISTA DE LA COMPRA OMARA - SEMANA\n\n';
+  const cats = {};
+  plan.forEach(d=>{
+    [d.desayuno.prot, d.comida.prot, d.cena.prot].forEach(p=>{ cats['Proteínas']=(cats['Proteínas']||new Set()).add(p); });
+    [d.comida.veg1, d.comida.veg2, d.cena.veg].forEach(v=>{ cats['Verduras']=(cats['Verduras']||new Set()).add(v); });
+    [d.desayuno.fruta, d.snack.fruta].forEach(f=>{ cats['Frutas']=(cats['Frutas']||new Set()).add(f); });
+    [d.desayuno.hc, d.comida.hc].forEach(h=>{ cats['Hidratos']=(cats['Hidratos']||new Set()).add(h); });
+  });
+  Object.entries(cats).forEach(([cat,items])=>{
+    texto += `\n${cat}:\n`;
+    items.forEach(i=>{ texto += `  □ ${i}\n`; });
+  });
+  texto += '\nBásicos: AOVE · Cúrcuma · Pimienta negra · Jengibre fresco\n';
+  navigator.clipboard.writeText(texto).then(()=>alert('✅ Lista copiada al portapapeles'));
+}
+
+// ═══════════════════════════════════════
+//  RUEDA (Canvas Radar)
+// ═══════════════════════════════════════
+function drawWheel(vals, canvas_id='wheelCanvas', overlays=null){
+  const canvas=document.getElementById(canvas_id);
+  if(!canvas) return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height;
+  const cx=W/2, cy=H/2;
+  const R=Math.min(W,H)/2*0.72;
+  const N=AXES.length;
+  const angles=AXES.map((_,i)=>-Math.PI/2+(2*Math.PI/N)*i);
+  ctx.clearRect(0,0,W,H);
+  for(let ring=1;ring<=5;ring++){
+    const r=R*(ring/5);
+    ctx.beginPath();
+    angles.forEach((a,i)=>{ const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.closePath();
+    ctx.strokeStyle=`rgba(80,140,100,${0.08+ring*0.03})`;
+    ctx.lineWidth=0.8;
+    ctx.stroke();
+    if(ring===5){ctx.fillStyle='rgba(80,140,100,0.03)';ctx.fill();}
+  }
+  angles.forEach((a,i)=>{ ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle='rgba(80,140,100,0.15)';ctx.lineWidth=0.8;ctx.stroke(); });
+  if(overlays && overlays.length>0){
+    const colors=['#C9A87C','#8BAA7B','#7BA6B8','#B8A0C8','#E8B86B','#5CB8A4'];
+    overlays.forEach((ov,idx)=>{
+      ctx.beginPath();
+      ov.vals.forEach((v,i)=>{ const r=R*(v/10),x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+      ctx.closePath();
+      ctx.fillStyle=hexToRgba(colors[idx%colors.length],0.12);ctx.fill();
+      ctx.strokeStyle=colors[idx%colors.length];ctx.lineWidth=2;ctx.stroke();
+    });
+  } else {
+    ctx.beginPath();
+    vals.forEach((v,i)=>{ const r=R*(v/10),x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.closePath();
+    const grd=ctx.createRadialGradient(cx,cy,0,cx,cy,R);
+    grd.addColorStop(0,'rgba(139,170,123,0.35)');grd.addColorStop(0.5,'rgba(92,184,164,0.18)');grd.addColorStop(1,'rgba(201,168,124,0.08)');
+    ctx.fillStyle=grd;ctx.fill();
+    ctx.strokeStyle='rgba(139,170,123,0.8)';ctx.lineWidth=2.5;ctx.stroke();
+    vals.forEach((v,i)=>{ const r=R*(v/10),x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);ctx.beginPath();ctx.arc(x,y,4.5,0,Math.PI*2);ctx.fillStyle=AXES[i].color;ctx.fill();ctx.strokeStyle='rgba(9,15,12,0.8)';ctx.lineWidth=1.5;ctx.stroke(); });
+  }
+  angles.forEach((a,i)=>{
+    const labelR=R+32,lx=cx+labelR*Math.cos(a),ly=cy+labelR*Math.sin(a);
+    const score=vals[i];
+    const semaColor=score>=7?'#5CB87E':score>=4?'#E8B86B':'#D97A6C';
+    ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.font=`500 11px 'DM Sans', sans-serif`;ctx.fillStyle=AXES[i].color;ctx.fillText(AXES[i].icon+' '+AXES[i].label,lx,ly-7);
+    ctx.font=`700 14px 'DM Sans', sans-serif`;ctx.fillStyle=semaColor;ctx.fillText(score+'/10',lx,ly+8);
+    ctx.restore();
+  });
+}
+
+function hexToRgba(hex,alpha){
+  const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function updateScoreBadge(score){ const el=document.getElementById('scoreNum'); if(el) el.textContent=score; }
+
+// ═══════════════════════════════════════
+//  GUARDAR EVALUACIÓN
+// ═══════════════════════════════════════
+function saveEval(fromQuiz=false){
+  const nombre = document.getElementById('nombre').value||'Usuario';
+  const edad   = parseInt(document.getElementById('edad').value)||45;
+  const sexo   = document.getElementById('sexo').value;
+  const peso   = parseFloat(document.getElementById('peso').value)||65;
+  const score  = calcScore(valores);
+  const edadBio= calcEdadBio(edad,score);
+  const ts     = Date.now();
+  const entry  = {
+    id:ts, nombre, edad, sexo, peso, score, edadBio,
+    vals:[...valores],
+    fecha:new Date(ts).toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}),
+    hora:new Date(ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
+    modo:fromQuiz?'cuestionario':'manual',
+    respuestas:fromQuiz?{answers:JSON.parse(JSON.stringify(qAnswers)),selections:JSON.parse(JSON.stringify(qSelections))}:null,
+    perfil:{
+      protFactor:parseFloat(document.getElementById('protFactor').value)||1.8,
+      hcFactor:parseFloat(document.getElementById('hcFactor').value)||3,
+      fatFactor:parseFloat(document.getElementById('fatFactor').value)||1,
+      dieta:document.getElementById('dietType').value,
+      objetivo:document.getElementById('goal').value
+    }
+  };
+  historial.unshift(entry);
+  if(historial.length>20) historial=historial.slice(0,20);
+  localStorage.setItem('omara_historial',JSON.stringify(historial));
+  lastEval=entry;
+  renderHistorial();
+  renderResultados(entry);
+  generarPlan();
+  if(!fromQuiz){
+    const btn=document.getElementById('btnSave');
+    btn.textContent='✅ ¡Guardado!';
+    setTimeout(()=>btn.innerHTML='🌿 Guardar evaluación &amp; generar plan',2000);
+  }
+}
+
+document.getElementById('btnSave').addEventListener('click',()=>saveEval(false));
+document.getElementById('btnOpenQuiz').addEventListener('click', openQuiz);
+
+// ═══════════════════════════════════════
+//  RENDERIZAR RESULTADOS
+// ═══════════════════════════════════════
+function renderResultados(e){
+  document.getElementById('m_score').textContent=e.score;
+  document.getElementById('m_edad_c').textContent=e.edad;
+  const diff=Math.round(e.edadBio)-e.edad;
+  document.getElementById('m_edad_b').textContent=Math.round(e.edadBio);
+  document.getElementById('m_edad_b').style.color=diff<=0?'var(--teal)':'var(--red)';
+  document.getElementById('m_diff').textContent=(diff<=0?'−':'+')+Math.abs(diff);
+  document.getElementById('m_diff').style.color=diff<=0?'var(--teal)':'var(--red)';
+
+  const pct=calcPercentil(e.score,e.edad,e.sexo);
+  const rr=calcRiesgoRelativo(e.score);
+  const rrPct=Math.round(Math.abs(1-rr)*100);
+  const rrDir=rr<1?'menos':'más';
+  document.getElementById('riskCompare').innerHTML=`
+    <div class="risk-box">
+      <p>📊 Tu puntuación (<strong style="color:var(--teal)">${e.score}/100</strong>) es superior al <strong style="color:var(--teal)">${pct}%</strong> de personas de tu edad y sexo <span style="font-size:10px;color:var(--text3)">(UK Biobank, n=85.000)</span></p>
+      <p>🎯 Riesgo relativo de mortalidad 10 años: <span class="risk-number">${rr.toFixed(2)}</span> <span style="font-size:11px;color:var(--text3)">(${rrPct}% ${rrDir} que la media)</span></p>
+    </div>`;
+
+  const cat=e.score>=75?'excelente':e.score>=60?'bueno':e.score>=45?'mejorable':'bajo';
+  const catColor=e.score>=75?'var(--teal)':e.score>=60?'var(--accent)':e.score>=45?'var(--amber)':'var(--red)';
+  const modeTag=e.modo==='cuestionario'?'<span style="font-size:9px;background:rgba(92,184,164,0.12);color:var(--teal);border:1px solid rgba(92,184,164,0.25);border-radius:5px;padding:2px 7px">✓ Cuestionario</span>':'<span style="font-size:9px;background:rgba(201,168,124,0.12);color:var(--accent);border:1px solid rgba(201,168,124,0.25);border-radius:5px;padding:2px 7px">Manual</span>';
+  document.getElementById('p_summary').innerHTML=`
+    <p>🌿 <strong>${e.nombre}</strong>, tu perfil de longevidad es <strong style="color:${catColor}">${cat}</strong> con una puntuación de <strong style="color:${catColor}">${e.score}/100</strong> ${modeTag}</p>
+    <p>Tu edad biológica estimada es <strong style="color:${diff<=0?'var(--teal)':'var(--red)'}">~${Math.round(e.edadBio)} años</strong> ${diff<=0?`(${Math.abs(diff)} años más joven biológicamente ✨)`:`(${diff} años mayor de lo ideal — con alta capacidad de mejora 🎯)`}</p>
+    <p style="font-size:11px;margin-top:0.5rem;color:var(--text3)">📚 Basado en PhenoAge (Levine, Aging 2018) y UK Biobank (n=85.000). Error: ±3,2 años.</p>`;
+
+  const debiles=getDebiles(e.vals);
+  if(debiles.length>0){
+    document.getElementById('p_debiles').innerHTML=`
+      <div class="sec" style="margin-top:0.8rem">⚠️ Áreas prioritarias de mejora</div>
+      ${debiles.map(d=>`
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)">
+          <span style="font-size:18px">${d.ax.icon}</span>
+          <div style="flex:1">
+            <div style="font-size:12px;font-weight:600;color:var(--text)">${d.ax.label} <span style="color:var(--red)">${d.v}/10</span></div>
+            <div style="font-size:10.5px;color:var(--text3)">${d.ax.desc}</div>
+          </div>
+          <div style="font-size:10px;background:rgba(217,122,108,0.12);border:1px solid rgba(217,122,108,0.3);border-radius:6px;padding:3px 8px;color:var(--red)">Bajo</div>
+        </div>`).join('')}`;
+  } else { document.getElementById('p_debiles').innerHTML=''; }
+
+  const alimentos=getAlimentosPerfil(e.vals);
+  const evBadge={alta:'<span class="f-badge alta">🟢 Alta evidencia</span>',moderada:'<span class="f-badge moderada">🟡 Moderada</span>',baja:'<span class="f-badge baja">🔴 Baja</span>'};
+  document.getElementById('foodGrid').innerHTML=alimentos.map(a=>`
+    <div class="food-card">
+      <div class="f-name">${a.nombre}</div>
+      <div class="f-mech">✦ ${a.mecanismo}</div>
+      <div class="f-desc">${a.desc}</div>
+      ${evBadge[a.evidencia]||''}
+    </div>`).join('');
+
+  const mechs=new Map();
+  alimentos.forEach(a=>{if(!mechs.has(a.mecanismo)) mechs.set(a.mecanismo,a.desc);});
+  document.getElementById('mechs').innerHTML=[...mechs.entries()].map(([m,d])=>`
+    <div style="display:flex;gap:6px;margin-bottom:4px">
+      <span style="color:var(--teal);font-weight:600;min-width:140px">• ${m}</span>
+      <span style="color:var(--text3)">${d}</span>
+    </div>`).join('');
+
+  // Proyección
+  const debCateg=debiles.map(d=>d.ax.id);
+  let mejora=0;
+  if(debCateg.includes('nutricion')) mejora+=2.5;
+  if(debCateg.includes('descanso')) mejora+=3;
+  if(debCateg.includes('deporte')) mejora+=2.5;
+  if(debCateg.includes('estres')) mejora+=2;
+  if(debCateg.includes('toxicos')) mejora+=1.5;
+  if(debCateg.includes('hidratacion')) mejora+=1;
+  if(debCateg.includes('suplementacion')) mejora+=1;
+  mejora=Math.min(12,mejora);
+  const newScore=Math.min(100,e.score+Math.round(mejora*2.5));
+  document.getElementById('predPanel').innerHTML=`
+    <div class="pred-card">
+      <p>📈 <strong>Si mejoras tus ${debiles.length} áreas de menor puntuación:</strong></p>
+      ${debiles.slice(0,3).map(d=>`<p style="font-size:12px">• <strong>${d.ax.label}</strong>: ${d.ax.preguntas[0].texto}</p>`).join('')}
+      <div style="margin:0.8rem 0;padding:0.7rem;background:rgba(139,170,123,0.1);border-radius:10px;border:1px solid rgba(139,170,123,0.2)">
+        <p>🎯 Puntuación potencial: <strong style="color:var(--teal);font-size:1.1em">${newScore}/100</strong> (+${newScore-e.score} pts)</p>
+        <p>⏳ Reducción de edad biológica: <strong style="color:var(--teal)">hasta ${mejora.toFixed(1)} años</strong> en 6-12 meses</p>
+        <p>🌿 Expectativa de vida saludable: <strong style="color:var(--accent)">+${(mejora*0.8).toFixed(1)} años extra</strong> de calidad</p>
+      </div>
+      <p style="font-size:10.5px;color:var(--text3)">📚 Basado en PREDIMED (n=7.447), Framingham y meta-análisis de intervenciones.</p>
+    </div>
+    <div style="margin-top:0.8rem">
+      <div class="sec">📊 Potencial por eje</div>
+      ${AXES.map((ax,i)=>{
+        const v=e.vals[i];
+        const pot=Math.round((10-v)*0.8);
+        const color=v>=7?'var(--teal)':v>=4?'var(--amber)':'var(--red)';
+        return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="width:16px">${ax.icon}</span>
+          <span style="font-size:11px;width:120px;color:var(--text2)">${ax.label}</span>
+          <div style="flex:1;height:6px;background:rgba(80,140,100,0.12);border-radius:3px;overflow:hidden">
+            <div style="width:${v*10}%;height:100%;background:${ax.color};border-radius:3px"></div>
+          </div>
+          <span style="font-size:10px;color:${color};width:30px;text-align:right">${v}/10</span>
+          ${pot>0?`<span style="font-size:9px;color:var(--teal)">+${pot}</span>`:'<span style="font-size:9px;color:var(--text4)">✓</span>'}
+        </div>`;
+      }).join('')}
+    </div>`;
+
+  drawWheel(e.vals);
+  updateScoreBadge(e.score);
+}
+
+// ═══════════════════════════════════════
+//  HISTORIAL
+// ═══════════════════════════════════════
+function renderHistorial(){
+  const c=document.getElementById('histList');
+  if(historial.length===0){
+    c.innerHTML='<div class="hist-empty">📋 Aún no hay evaluaciones guardadas.<br>Completa los sliders o el cuestionario y guarda tu primera rueda.</div>';
+    return;
+  }
+  c.innerHTML=historial.map((e,idx)=>{
+    const cat=e.score>=75?'var(--teal)':e.score>=60?'var(--accent)':e.score>=45?'var(--amber)':'var(--red)';
+    const isSelected=selectedIds.includes(e.id);
+    const modeIcon=e.modo==='cuestionario'?'📝':'✏️';
+    return `
+    <div class="hist-item${isSelected?' selected':''}" onclick="selectHist(${e.id})" id="hi_${e.id}">
+      <div class="hist-dot" style="background:${cat.replace('var(--','rgba(').replace(')',',0.2)')};border:2px solid ${cat}">
+        <span style="color:${cat};font-size:11px">${e.score}</span>
+      </div>
+      <div class="hist-info">
+        <div class="hist-name">${e.nombre} · ${e.edad}a ${modeIcon}</div>
+        <div class="hist-date">📅 ${e.fecha} ${e.hora}</div>
+      </div>
+      <div class="hist-actions">
+        <button class="btn-sec" style="padding:4px 8px;font-size:10px" onclick="event.stopPropagation();loadEval(${idx})">Ver</button>
+        <button class="hist-del" onclick="event.stopPropagation();deleteEval(${e.id})" title="Eliminar">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function selectHist(id){
+  if(selectedIds.includes(id)){ selectedIds=selectedIds.filter(x=>x!==id); }
+  else { if(selectedIds.length>=4) selectedIds.shift(); selectedIds.push(id); }
+  renderHistorial();
+}
+
+function loadEval(idx){
+  const e=historial[idx];
+  valores=[...e.vals];
+  if(e.respuestas){ qAnswers=JSON.parse(JSON.stringify(e.respuestas.answers)); qSelections=JSON.parse(JSON.stringify(e.respuestas.selections)); }
+  // Restaurar perfil nutricional si está guardado
+  if(e.perfil){
+    document.getElementById('protFactor').value=e.perfil.protFactor||1.8;
+    document.getElementById('hcFactor').value=e.perfil.hcFactor||3;
+    document.getElementById('fatFactor').value=e.perfil.fatFactor||1;
+    document.getElementById('dietType').value=e.perfil.dieta||'omnivoro';
+    document.getElementById('goal').value=e.perfil.objetivo||'longevidad';
+    updateMacroPreview();
+  }
+  buildSliders();
+  renderResultados(e);
+  lastEval=e;
+  generarPlan();
+  showTab('t_resumen',null);
+  document.querySelectorAll('.t-btn').forEach((b,i)=>b.classList.toggle('active',i===0));
+}
+
+function deleteEval(id){
+  historial=historial.filter(e=>e.id!==id);
+  selectedIds=selectedIds.filter(x=>x!==id);
+  localStorage.setItem('omara_historial',JSON.stringify(historial));
+  renderHistorial();
+}
+
+// ═══════════════════════════════════════
+//  COMPARAR
+// ═══════════════════════════════════════
+document.getElementById('btnCompare').addEventListener('click',()=>{
+  if(selectedIds.length<2){alert('Selecciona al menos 2 evaluaciones.');return;}
+  const evs=selectedIds.map(id=>historial.find(e=>e.id===id)).filter(Boolean);
+  drawWheel([5,5,5,5,5,5,5],'compareCanvas',evs.map(e=>({vals:e.vals})));
+  const colors=['#C9A87C','#8BAA7B','#7BA6B8','#B8A0C8','#E8B86B','#5CB8A4'];
+  document.getElementById('compareLegend').innerHTML=evs.map((e,i)=>`
+    <span><span class="cleg-dot" style="background:${colors[i%colors.length]}"></span>${e.nombre} ${e.fecha} (${e.score}pts)</span>`).join('');
+  document.getElementById('compareStats').innerHTML=`
+    <div class="sec">Detalle por eje</div>
+    <div style="display:flex;gap:6px;margin-bottom:6px;font-size:10px;color:var(--text3)">
+      <span style="width:116px"></span>
+      ${evs.map((e,i)=>`<span style="width:28px;text-align:center;color:${colors[i%colors.length]}">${e.fecha.split(' ')[0]}</span>`).join('')}
+    </div>
+    ${AXES.map((ax,i)=>`
+      <div style="display:flex;gap:6px;align-items:center;margin-bottom:3px;font-size:11px">
+        <span style="width:16px">${ax.icon}</span>
+        <span style="width:100px;color:var(--text2)">${ax.label}</span>
+        ${evs.map((e,ei)=>`<span style="width:28px;text-align:center;color:${colors[ei%colors.length]};font-weight:600">${e.vals[i]}</span>`).join('')}
+        <span style="color:var(--teal);font-size:9px">${evs.length>1?'↕ '+(Math.max(...evs.map(e=>e.vals[i]))-Math.min(...evs.map(e=>e.vals[i])))+'pts':''}</span>
+      </div>`).join('')}`;
+  showTab('t_compare',null);
+  document.querySelectorAll('.t-btn').forEach((b,i)=>b.classList.toggle('active',i===4));
+});
+
+// ═══════════════════════════════════════
+//  EXPORTAR
+// ═══════════════════════════════════════
+document.getElementById('btnExport').addEventListener('click',()=>{
+  const blob=new Blob([JSON.stringify(historial,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`omara_longevidad_${new Date().toISOString().slice(0,10)}.json`; a.click();
+});
+
+function exportMethodology(){
+  const md=`# OMARA — Metodología científica completa v3.0\n\n${REFERENCIAS.map(r=>`- ${r.autores} (${r.year}). ${r.titulo}. ${r.revista}. DOI: ${r.doi}`).join('\n')}\n\nGenerado por OMARA v3.0 · ${new Date().toLocaleDateString('es-ES')}`;
+  const blob=new Blob([md],{type:'text/markdown'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`omara_metodologia_${new Date().toISOString().slice(0,10)}.md`; a.click();
+}
+window.exportMethodology=exportMethodology;
+window.openSciModal=()=>{ document.getElementById('refList').innerHTML=REFERENCIAS.map(r=>`<div class="sci-ref-item"><div class="sci-ref-title">${r.titulo}</div><div class="sci-ref-meta">${r.autores} · <em>${r.revista}</em> · ${r.year}</div><div class="sci-ref-doi">DOI: ${r.doi} · <span class="evidence-badge ${r.ev==='alta'?'ev-alta':r.ev==='moderada'?'ev-mod':'ev-baja'}">${r.ev==='alta'?'🟢 Alta':'🟡 Moderada'}</span></div></div>`).join(''); document.getElementById('sciModal').classList.add('active'); };
+window.closeSciModal=()=>document.getElementById('sciModal').classList.remove('active');
+window.showSciTab=(id,btn)=>{ document.querySelectorAll('.modal-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.modal-t-btn').forEach(b=>b.classList.remove('active'));document.getElementById(id).classList.add('active');if(btn)btn.classList.add('active'); };
+
+// ═══════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════
+function showTab(id,btn){
+  document.querySelectorAll('.t-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+window.showTab=showTab;
+
+// ═══════════════════════════════════════
+//  AI COACH
+// ═══════════════════════════════════════
+function getProfileContext(){
+  if(!lastEval) return '';
+  const debiles=getDebiles(lastEval.vals);
+  const perfil=lastEval.perfil||{};
+  return `
+Perfil: ${lastEval.nombre}, ${lastEval.edad} años, ${lastEval.sexo}, ${lastEval.peso||65}kg
+Puntuación longevidad: ${lastEval.score}/100 · Edad biológica: ~${Math.round(lastEval.edadBio)} años
+Dieta: ${perfil.dieta||'omnívoro'} · Objetivo: ${perfil.objetivo||'longevidad'}
+Macros: ${Math.round((lastEval.peso||65)*(perfil.protFactor||1.8))}g prot / ${Math.round((lastEval.peso||65)*(perfil.hcFactor||3))}g HC / ${Math.round((lastEval.peso||65)*(perfil.fatFactor||1))}g grasa
+Puntuaciones: ${AXES.map((ax,i)=>`${ax.label}: ${lastEval.vals[i]}/10`).join(' · ')}
+Áreas débiles (≤4): ${debiles.map(d=>d.ax.label+' ('+d.v+'/10)').join(', ')||'ninguna'}`.trim();
+}
+
+async function sendAI(){
+  const input=document.getElementById('aiInput');
+  const msg=input.value.trim();
+  if(!msg) return;
+  input.value='';
+  appendMsg(msg,'user');
+  const btn=document.getElementById('aiSendBtn');
+  btn.innerHTML='<span class="spinner"></span>';btn.disabled=true;
+  try {
+    const apiKey=document.getElementById('aiKey').value.trim();
+    const headers={'Content-Type':'application/json'};
+    if(apiKey) headers['x-api-key']=apiKey;
+    const sysPrompt=`Eres OMARA, coach experto en longevidad natural. Das respuestas concisas, prácticas y científicamente respaldadas. Cita estudios reales cuando sea posible. Máximo 200 palabras.\n${getProfileContext()?'PERFIL:\n'+getProfileContext():''}`;
+    const response=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers,body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sysPrompt,messages:[{role:'user',content:msg}]})});
+    const data=await response.json();
+    appendMsg(data.content?.[0]?.text||'Verifica tu API key.','ai');
+  } catch(err){ appendMsg('⚠️ Error de conexión. Introduce tu API key de Anthropic para activar el coach IA.','ai'); }
+  btn.textContent='↑';btn.disabled=false;
+  document.getElementById('aiChat').scrollTop=999999;
+}
+
+function appendMsg(text,role){
+  const chat=document.getElementById('aiChat');
+  const d=document.createElement('div');
+  d.className=`msg ${role}`;
+  d.textContent=role==='ai'?'🌿 '+text:text;
+  chat.appendChild(d);
+  chat.scrollTop=999999;
+}
+
+function quickAsk(q){ document.getElementById('aiInput').value=q; sendAI(); }
+window.quickAsk=quickAsk;
+
+// Cerrar modales
+document.getElementById('sciModal').addEventListener('click',e=>{if(e.target===document.getElementById('sciModal'))closeSciModal();});
+document.getElementById('quizModal').addEventListener('click',e=>{if(e.target===document.getElementById('quizModal'))closeQuiz();});
+document.getElementById('shopModal').addEventListener('click',e=>{if(e.target===document.getElementById('shopModal'))cerrarListaCompra();});
+
+// ═══════════════════════════════════════
+//  MIGRACIÓN Y INIT
+// ═══════════════════════════════════════
+function migrateOldEvals(){
+  let changed=false;
+  historial=historial.map(e=>{
+    if(!e.modo){e.modo='manual';changed=true;}
+    if(!e.respuestas){e.respuestas=null;changed=true;}
+    if(!e.perfil){e.perfil={protFactor:1.8,hcFactor:3,fatFactor:1,dieta:'omnivoro',objetivo:'longevidad'};changed=true;}
+    return e;
+  });
+  if(changed) localStorage.setItem('omara_historial',JSON.stringify(historial));
+}
+
+migrateOldEvals();
+initQAnswers();
+buildSliders();
+drawWheel(valores);
+updateScoreBadge(calcScore(valores));
+renderHistorial();
+
+if(historial.length>0){
+  const last=historial[0];
+  valores=[...last.vals];
+  if(last.respuestas){qAnswers=JSON.parse(JSON.stringify(last.respuestas.answers));qSelections=JSON.parse(JSON.stringify(last.respuestas.selections));}
+  if(last.perfil){
+    document.getElementById('protFactor').value=last.perfil.protFactor||1.8;
+    document.getElementById('hcFactor').value=last.perfil.hcFactor||3;
+    document.getElementById('fatFactor').value=last.perfil.fatFactor||1;
+    document.getElementById('dietType').value=last.perfil.dieta||'omnivoro';
+    document.getElementById('goal').value=last.perfil.objetivo||'longevidad';
+    updateMacroPreview();
+  }
+  buildSliders();
+  renderResultados(last);
+  lastEval=last;
+  generarPlan();
+}
+</script>
+</body>
+</html>
